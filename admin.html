@@ -229,6 +229,7 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
         <button role="tab" data-tab="stats" aria-selected="false">Statistiche</button>
         <button role="tab" data-tab="orders" aria-selected="false">Ordini</button>
         <button role="tab" data-tab="info" aria-selected="false">Locale</button>
+        <button role="tab" data-tab="visits" aria-selected="false">Visite</button>
         <button role="tab" data-tab="reviews" aria-selected="false">Recensioni</button>
         <button role="tab" data-tab="links" aria-selected="false">QR e cucina</button>
       </nav>
@@ -273,6 +274,11 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
     </section>
 
     <!-- LINK -->
+    <section data-panel="visits" hidden>
+      <div class="periods" id="periods4"></div>
+      <div id="visBox"><p class="empty">Caricamento…</p></div>
+    </section>
+
     <section data-panel="reviews" hidden>
       <div class="periods" id="periods3"></div>
       <div id="revBox"><p class="empty">Caricamento…</p></div>
@@ -412,6 +418,7 @@ document.querySelector("nav.tabs").addEventListener("click", function(e){
   if (b.dataset.tab === "stats") loadStats();
   if (b.dataset.tab === "orders") loadOrders();
   if (b.dataset.tab === "reviews") loadReviews();
+  if (b.dataset.tab === "visits") loadVisits();
   window.scrollTo(0, 0);
 });
 
@@ -575,7 +582,7 @@ function shift(n){ return isoDay(new Date(Date.now() + n * 86400000)); }
 var PER = { key: "oggi", dal: shift(0), al: shift(0) };
 var PRESETS = [["oggi", "Oggi", 0, 0], ["ieri", "Ieri", -1, -1], ["7", "Ultimi 7 giorni", -6, 0], ["30", "Ultimi 30 giorni", -29, 0]];
 function renderPeriods(){
-  ["periods1", "periods2", "periods3"].forEach(function(id){
+  ["periods1", "periods2", "periods3", "periods4"].forEach(function(id){
     $(id).innerHTML = PRESETS.map(function(p){ return '<button data-p="' + p[0] + '" aria-pressed="' + (PER.key === p[0]) + '">' + p[1] + "</button>"; }).join("") +
       '<span style="display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)">dal <input type="date" data-d="dal" value="' + PER.dal + '"> al <input type="date" data-d="al" value="' + PER.al + '"></span>';
   });
@@ -588,9 +595,10 @@ function onPeriod(e){
   renderPeriods(); STATS = null; ORDERS = null;
   if (!document.querySelector('[data-panel="stats"]').hidden) loadStats();
   else if (!document.querySelector('[data-panel="reviews"]').hidden) loadReviews();
+  else if (!document.querySelector('[data-panel="visits"]').hidden) loadVisits();
   else loadOrders();
 }
-["periods1", "periods2", "periods3"].forEach(function(id){ $(id).addEventListener("click", onPeriod); $(id).addEventListener("change", onPeriod); });
+["periods1", "periods2", "periods3", "periods4"].forEach(function(id){ $(id).addEventListener("click", onPeriod); $(id).addEventListener("change", onPeriod); });
 renderPeriods();
 function perLabel(){ return PER.dal === PER.al ? new Date(PER.dal + "T12:00:00").toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" }) : "dal " + new Date(PER.dal + "T12:00:00").toLocaleDateString("it-IT") + " al " + new Date(PER.al + "T12:00:00").toLocaleDateString("it-IT"); }
 
@@ -694,6 +702,56 @@ $("csvBtn").onclick = function(){
   var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
   a.download = "ordini-" + PER.dal + (PER.al !== PER.dal ? "_" + PER.al : "") + ".csv"; a.click();
 };
+
+// ---------- VISITE ----------
+var EVN = [["marina", "Apre la chat con Marina"], ["marina_msg", "Messaggi a Marina"], ["carrello", "Apre il carrello"], ["riepilogo", "Va al riepilogo"],
+  ["ordine", "Ordini al tavolo inviati"], ["ordine_asporto", "Ordini da asporto inviati"], ["stato_ordine", "Controlla lo stato dell'ordine"],
+  ["prenota", "Tocca Prenota"], ["prenota_whatsapp", "Invia la prenotazione su WhatsApp"], ["chiama", "Tocca Chiama"], ["info", "Tocca Info"],
+  ["indicazioni", "Indicazioni stradali"], ["voto", "Lascia un voto"], ["recensione_google", "Va alla recensione Google"], ["sezioni_home", "Torna all'elenco sezioni"]];
+function dur(sec){ if (!sec) return "—"; var m = Math.floor(sec / 60), s2 = sec % 60; return m ? m + " min " + (s2 ? s2 + " s" : "") : s2 + " s"; }
+function pct(a, b){ return b ? Math.round(a / b * 100) + "%" : "—"; }
+async function loadVisits(){
+  $("visBox").innerHTML = '<p class="empty">Caricamento…</p>';
+  try {
+    var v = await api("/api/eventi?dal=" + PER.dal + "&al=" + PER.al);
+    var kpi = function(l, val, sub){ return '<div class="kpi"><small>' + l + '</small><b class="tn">' + val + "</b>" + (sub ? "<span>" + sub + "</span>" : "") + "</div>"; };
+    var html = '<p class="sub" style="text-transform:capitalize">' + esc(perLabel()) + "</p>" + '<div class="kpis">' +
+      kpi("Visite", v.sessions, v.visitors + " persone diverse") +
+      kpi("Tempo medio", dur(v.avgDur), "sul menu, per visita") +
+      kpi("Dal QR del tavolo", pct(v.src.qr, v.sessions), v.src.qr + (v.src.qr === 1 ? " visita" : " visite") + " · " + v.src.sito + " dal sito") +
+      kpi("Da telefono", pct(v.dev.mobile, v.sessions), v.dev.desktop + " da computer") +
+      kpi("Visite con ordine", pct(v.funnel.ordine, v.sessions), v.funnel.ordine + (v.funnel.ordine === 1 ? " ordine partito" : " ordini partiti") + " dal menu") +
+      kpi("Uscite subito", pct(v.bounce, v.sessions), "meno di 10 secondi, senza guardare nulla") + "</div>";
+    if (!v.sessions) { $("visBox").innerHTML = html + '<p class="empty">Nessuna visita in questo periodo. Le tue visite dal telefono con cui usi il pannello non vengono contate.</p>'; return; }
+    html += '<div class="charts">';
+    // percorso del cliente
+    var F = [["Visite", v.funnel.visite], ["Hanno aggiunto piatti", v.funnel.carrello], ["Sono arrivati al riepilogo", v.funnel.riepilogo], ["Hanno inviato l'ordine", v.funnel.ordine]];
+    html += '<div class="card chart"><h3>Dal menu all\'ordine</h3><p>Quanti clienti arrivano a ogni passo</p>' +
+      hbars(F.map(function(f){ return { x: f[0], v: f[1] }; }), function(r){ return r.v + " · " + pct(r.v, v.sessions); }, function(r){ return r.x + ": " + r.v + " (" + pct(r.v, v.sessions) + " delle visite)"; }) + "</div>";
+    // orari
+    var hrs = v.byHour.map(function(n, h){ return { h: h, n: n }; }).filter(function(x){ return x.n; }).map(function(x){ return x.h; });
+    var h0 = Math.min(10, Math.min.apply(null, hrs)), h1 = Math.max(23, Math.max.apply(null, hrs));
+    html += '<div class="card chart"><h3>Quando guardano il menu</h3><p>Visite per ora del giorno</p>' +
+      vbars(v.byHour.slice(h0, h1 + 1).map(function(n, i){ return { x: String(h0 + i), v: n, h: h0 + i }; }), function(x){ return Math.round(x); }, function(r){ return r.h + ":00–" + (r.h + 1) + ":00 · " + r.v + " visite"; }) + "</div>";
+    if (v.byDay.length > 1) html += '<div class="card chart"><h3>Visite per giorno</h3><p>' + v.sessions + " visite in " + v.byDay.length + " giorni</p>" +
+      vbars(v.byDay.map(function(d){ return { x: v.byDay.length > 10 ? d.date.slice(8) : new Date(d.date + "T12:00:00").toLocaleDateString("it-IT", { weekday: "short", day: "numeric" }), v: d.sessions, d: d }; }), function(x){ return Math.round(x); }, function(r){ return new Date(r.d.date + "T12:00:00").toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "short" }) + " · " + r.d.sessions + " visite · " + r.d.visitors + " persone"; }) + "</div>";
+    // sezioni
+    var secs = Object.keys(v.sec).map(function(k){ return { x: k, v: v.sec[k], t: v.secTime[k] || 0 }; }).sort(function(a, b){ return b.v - a.v; });
+    if (secs.length) html += '<div class="card chart"><h3>Sezioni più viste</h3><p>Aperture e tempo medio passato nella sezione</p>' +
+      hbars(secs, function(r){ return r.v + " · " + dur(Math.round(r.t / r.v)); }, function(r){ return r.x + " · " + r.v + " aperture · in media " + dur(Math.round(r.t / r.v)); }) + "</div>";
+    // piatti
+    var name = function(id){ var f = find(id); return f ? f.p.name : id; };
+    var opens = Object.keys(v.dishOpen).map(function(k){ return { x: name(k), v: v.dishOpen[k] }; }).sort(function(a, b){ return b.v - a.v; }).slice(0, 10);
+    if (opens.length) html += '<div class="card chart"><h3>Piatti più guardati</h3><p>Schede dei piatti aperte</p>' + hbars(opens, function(r){ return r.v + " ×"; }, function(r){ return r.x + " · aperto " + r.v + " volte"; }) + "</div>";
+    var adds = Object.keys(v.dishAdd).map(function(k){ return { x: name(k), v: v.dishAdd[k] }; }).sort(function(a, b){ return b.v - a.v; }).slice(0, 10);
+    if (adds.length) html += '<div class="card chart"><h3>Piatti più aggiunti al carrello</h3><p>Anche quelli poi non ordinati</p>' + hbars(adds, function(r){ return r.v + " ×"; }, function(r){ return r.x + " · aggiunto " + r.v + " volte"; }) + "</div>";
+    // pulsanti
+    var evs = EVN.filter(function(e){ return v.ev[e[0]]; }).map(function(e){ return { x: e[1], v: v.ev[e[0]] }; }).sort(function(a, b){ return b.v - a.v; });
+    if (evs.length) html += '<div class="card chart"><h3>Pulsanti e azioni</h3><p>Quante volte è stato toccato ogni pulsante</p>' + hbars(evs, function(r){ return r.v + " ×"; }, function(r){ return r.x + " · " + r.v + " volte"; }) + "</div>";
+    html += "</div>";
+    $("visBox").innerHTML = html;
+  } catch (e) { $("visBox").innerHTML = '<p class="empty">Errore: ' + esc(e.message) + "</p>"; }
+}
 
 // ---------- RECENSIONI ----------
 function starTxt(n){ return "★★★★★".slice(0, n) + "☆☆☆☆☆".slice(0, 5 - n); }
