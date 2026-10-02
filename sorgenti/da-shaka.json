@@ -1,0 +1,969 @@
+{
+  "_nota": "RISTORANTE FITTIZIO PER DEMO. Tutti i dati (contatti, orari, menu, prezzi) sono inventati. Gli allergeni sono dati dimostrativi e NON costituiscono una certificazione ufficiale.",
+  "restaurant": {
+    "name": "Da Shaka",
+    "slug": "da-shaka",
+    "demo": true,
+    "tagline": "Ristorante di Pesce",
+    "order_prefix": "DS",
+    "address": "Via Roma 111",
+    "postal_code": "29020",
+    "city": "Vigolzone",
+    "province": "PC",
+    "region": "Emilia-Romagna",
+    "country": "Italia",
+    "latitude": 44.9153,
+    "longitude": 9.6692,
+    "phone": "+39 0523 000 111",
+    "email": "ciao@dashaka.it",
+    "website": "www.dashaka.it",
+    "description": "Da Shaka porta il mare sulle colline della Val Nure. Pesce fresco scelto ogni mattina, ricette della tradizione italiana di mare rilette con leggerezza e una sala luminosa in legno chiaro e blu profondo, dove sentirsi a casa. In carta, accanto ai grandi classici, trovi sempre il pescato del giorno e una selezione di vini bianchi e bollicine pensata per il pesce.",
+    "opening_hours": [
+      {
+        "day": "Lunedì",
+        "hours": "Chiuso"
+      },
+      {
+        "day": "Martedì",
+        "hours": "19:00 – 22:30"
+      },
+      {
+        "day": "Mercoledì",
+        "hours": "12:15 – 14:30 · 19:00 – 22:30"
+      },
+      {
+        "day": "Giovedì",
+        "hours": "12:15 – 14:30 · 19:00 – 22:30"
+      },
+      {
+        "day": "Venerdì",
+        "hours": "12:15 – 14:30 · 19:00 – 23:00"
+      },
+      {
+        "day": "Sabato",
+        "hours": "12:15 – 14:30 · 19:00 – 23:30"
+      },
+      {
+        "day": "Domenica",
+        "hours": "12:15 – 15:00 · 19:00 – 22:30"
+      }
+    ],
+    "closing_days": "Lunedì tutto il giorno e martedì a pranzo. Ferie: due settimane a metà agosto.",
+    "tables_count": 20,
+    "takeaway_on": true,
+    "takeaway_min": 20,
+    "takeaway_open_before": 30,
+    "takeaway_close_before": 30,
+    "seats": 64,
+    "services": [
+      "Prenotazione consigliata nel weekend",
+      "Dehors estivo (20 coperti)",
+      "Parcheggio gratuito vicino",
+      "Accessibile in sedia a rotelle",
+      "Opzioni vegetariane",
+      "Seggioloni per bambini",
+      "Asporto su ordinazione",
+      "Wi-Fi gratuito",
+      "Pagamento con carte e contactless",
+      "Cani di piccola taglia ammessi"
+    ],
+    "info": "Il pescato del giorno varia in base al mercato: chiedi al personale. Pane, focaccia e grissini sono fatti in casa. Coperto € 2,50. Per allergie e intolleranze rivolgiti sempre al personale prima di ordinare."
+  },
+  "categories": [
+    {
+      "name": "Menu del giorno",
+      "products": [
+        {
+          "name": "Risotto al nero di seppia",
+          "description": "Riso Carnaroli mantecato al nero di seppia, con listarelle di seppia scottate e prezzemolo. Solo oggi.",
+          "price": 16,
+          "allergens": [
+            "Molluschi",
+            "Latte",
+            "Sedano"
+          ]
+        },
+        {
+          "name": "Pesce spada alla siciliana",
+          "description": "Trancio di pesce spada con pomodorini, capperi, olive verdi e origano. Solo oggi.",
+          "price": 20,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Menu pranzo del giorno",
+          "description": "Un primo e un secondo del giorno a scelta, acqua e caffè. Dal mercoledì al venerdì, solo a pranzo.",
+          "price": 24,
+          "allergens": [
+            "Glutine",
+            "Pesce",
+            "Molluschi"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Antipasti",
+      "products": [
+        {
+          "name": "Insalata di mare tiepida",
+          "description": "Polpo, seppie, cozze, vongole e gamberi con sedano croccante, limone e prezzemolo",
+          "price": 16.5,
+          "allergens": [
+            "Molluschi",
+            "Crostacei",
+            "Sedano"
+          ]
+        },
+        {
+          "name": "Polpo arrosto su crema di patate",
+          "description": "Tentacolo di polpo scottato alla piastra, crema di patate affumicata e paprika dolce",
+          "price": 17,
+          "allergens": [
+            "Molluschi",
+            "Latte"
+          ]
+        },
+        {
+          "name": "Gamberi rossi in tempura",
+          "description": "Gamberi rossi in pastella leggera con maionese al lime",
+          "price": 15.5,
+          "allergens": [
+            "Crostacei",
+            "Glutine",
+            "Uova"
+          ]
+        },
+        {
+          "name": "Sauté di cozze e vongole",
+          "description": "Cozze e vongole aperte in padella con aglio, vino bianco e crostini di pane",
+          "price": 14,
+          "allergens": [
+            "Molluschi",
+            "Glutine",
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Carpaccio di pesce spada agli agrumi",
+          "description": "Pesce spada marinato con finocchio, arancia e pepe rosa",
+          "price": 15,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Tartare di tonno e avocado",
+          "description": "Tonno pinna gialla tagliato al coltello, avocado, sesamo tostato e salsa di soia",
+          "price": 18.5,
+          "allergens": [
+            "Pesce",
+            "Sesamo",
+            "Soia"
+          ]
+        },
+        {
+          "name": "Tartare di salmone e mango",
+          "description": "Salmone marinato, mango, erba cipollina e olio al lime",
+          "price": 16,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Alici marinate al limone",
+          "description": "Alici fresche marinate con cipolla rossa di Tropea e finocchietto",
+          "price": 11,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Alici fritte in semola",
+          "description": "Alici dorate in semola di grano duro, servite con spicchi di limone",
+          "price": 12.5,
+          "allergens": [
+            "Pesce",
+            "Glutine"
+          ]
+        },
+        {
+          "name": "Fritto di paranza",
+          "description": "Pesciolini di piccola taglia fritti croccanti, come nelle friggitorie di riviera",
+          "price": 16,
+          "allergens": [
+            "Pesce",
+            "Glutine"
+          ]
+        },
+        {
+          "name": "Crudo reale Da Shaka",
+          "description": "Scampi, gamberi rossi, ostriche, tartare e carpacci del giorno. Per due persone",
+          "price": 42,
+          "allergens": [
+            "Crostacei",
+            "Molluschi",
+            "Pesce"
+          ],
+          "available": false
+        },
+        {
+          "name": "Ostriche Fine de Claire",
+          "description": "Tre ostriche aperte al momento con limone e scalogno all'aceto",
+          "price": 13.5,
+          "allergens": [
+            "Molluschi",
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Capesante gratinate alle erbe",
+          "description": "Due capesante nel guscio con pangrattato alle erbe e burro",
+          "price": 14.5,
+          "allergens": [
+            "Molluschi",
+            "Glutine",
+            "Latte"
+          ]
+        },
+        {
+          "name": "Baccalà mantecato su polenta",
+          "description": "Baccalà mantecato con olio extravergine su crostini di polenta grigliata",
+          "price": 12,
+          "allergens": [
+            "Pesce",
+            "Latte"
+          ]
+        },
+        {
+          "name": "Fiori di zucca in pastella",
+          "description": "Ripieni di ricotta e maggiorana, in pastella leggera",
+          "price": 9.5,
+          "allergens": [
+            "Glutine",
+            "Latte",
+            "Uova"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Primi",
+      "products": [
+        {
+          "name": "Spaghetti alle vongole veraci",
+          "description": "Vongole veraci, aglio, olio extravergine, prezzemolo e un filo di peperoncino",
+          "price": 15,
+          "allergens": [
+            "Glutine",
+            "Molluschi"
+          ]
+        },
+        {
+          "name": "Linguine allo scoglio",
+          "description": "Cozze, vongole, gamberi, calamari e pomodorino datterino",
+          "price": 17,
+          "allergens": [
+            "Glutine",
+            "Molluschi",
+            "Crostacei"
+          ]
+        },
+        {
+          "name": "Risotto ai frutti di mare",
+          "description": "Carnaroli mantecato al fumetto di pesce con cozze, vongole, gamberi e calamari. Minimo due persone, prezzo a persona",
+          "price": 17.5,
+          "allergens": [
+            "Molluschi",
+            "Crostacei",
+            "Sedano",
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Paccheri al ragù di pesce spada",
+          "description": "Paccheri di Gragnano, pesce spada, melanzane fritte e menta fresca",
+          "price": 16,
+          "allergens": [
+            "Glutine",
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Spaghettoni all'astice",
+          "description": "Mezzo astice, pomodoro fresco, un tocco di brandy e basilico",
+          "price": 25,
+          "allergens": [
+            "Glutine",
+            "Crostacei",
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Ravioli di branzino al burro e limone",
+          "description": "Pasta fresca ripiena di branzino e ricotta, burro al limone e bottarga grattugiata",
+          "price": 16.5,
+          "allergens": [
+            "Glutine",
+            "Uova",
+            "Pesce",
+            "Latte"
+          ]
+        },
+        {
+          "name": "Tagliolini ai ricci di mare",
+          "description": "Tagliolini all'uovo con polpa di ricci, aglio e prezzemolo",
+          "price": 22,
+          "allergens": [
+            "Glutine",
+            "Uova"
+          ]
+        },
+        {
+          "name": "Tagliolini gamberi e zucchine",
+          "description": "Tagliolini all'uovo, gamberi, zucchine e scorza di limone",
+          "price": 15.5,
+          "allergens": [
+            "Glutine",
+            "Uova",
+            "Crostacei"
+          ]
+        },
+        {
+          "name": "Gnocchi con calamaretti e pesto",
+          "description": "Gnocchi di patate fatti in casa, calamaretti saltati e pesto di basilico",
+          "price": 15,
+          "allergens": [
+            "Glutine",
+            "Uova",
+            "Molluschi",
+            "Latte",
+            "Frutta a guscio"
+          ]
+        },
+        {
+          "name": "Mezze maniche al tonno fresco",
+          "description": "Tonno fresco, capperi, olive taggiasche e pomodorino",
+          "price": 14.5,
+          "allergens": [
+            "Glutine",
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Trofie gamberi e pistacchio",
+          "description": "Pesto di pistacchio e gamberi saltati in padella",
+          "price": 16,
+          "allergens": [
+            "Glutine",
+            "Crostacei",
+            "Frutta a guscio",
+            "Latte"
+          ]
+        },
+        {
+          "name": "Spaghetti alla chitarra con le sarde",
+          "description": "Sarde fresche, finocchietto selvatico, uvetta, pinoli e mollica tostata",
+          "price": 14,
+          "allergens": [
+            "Glutine",
+            "Pesce",
+            "Frutta a guscio"
+          ]
+        },
+        {
+          "name": "Fregola sarda con arselle",
+          "description": "Fregola tostata cotta nel brodetto di arselle e pomodoro",
+          "price": 15.5,
+          "allergens": [
+            "Glutine",
+            "Molluschi",
+            "Sedano"
+          ]
+        },
+        {
+          "name": "Zuppa di pesce Da Shaka",
+          "description": "Brodetto di pesce misto, crostacei e molluschi con crostoni all'aglio",
+          "price": 24,
+          "allergens": [
+            "Pesce",
+            "Crostacei",
+            "Molluschi",
+            "Glutine",
+            "Sedano",
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Spaghetti pomodoro e basilico",
+          "description": "Pomodoro San Marzano, basilico fresco e Parmigiano Reggiano a parte",
+          "price": 11,
+          "allergens": [
+            "Glutine",
+            "Latte"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Secondi",
+      "products": [
+        {
+          "name": "Branzino al forno con patate",
+          "description": "Branzino intero al forno con patate, olive e pomodorini. Circa 400 g",
+          "price": 23,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Orata alla brace",
+          "description": "Orata intera alla griglia con salmoriglio e verdure grigliate",
+          "price": 22,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Tagliata di tonno al sesamo",
+          "description": "Tonno scottato in crosta di sesamo, salsa teriyaki e cipollotto",
+          "price": 24.5,
+          "allergens": [
+            "Pesce",
+            "Sesamo",
+            "Soia",
+            "Glutine"
+          ]
+        },
+        {
+          "name": "Filetto di salmone alla piastra",
+          "description": "Salmone con salsa allo yogurt e aneto, spinaci saltati",
+          "price": 19,
+          "allergens": [
+            "Pesce",
+            "Latte"
+          ]
+        },
+        {
+          "name": "Calamari ripieni al forno",
+          "description": "Calamari ripieni di pane, olive, capperi e pomodoro",
+          "price": 18.5,
+          "allergens": [
+            "Molluschi",
+            "Glutine",
+            "Uova"
+          ]
+        },
+        {
+          "name": "Calamari alla griglia",
+          "description": "Calamari nostrani alla brace con insalatina di stagione e limone",
+          "price": 19.5,
+          "allergens": [
+            "Molluschi"
+          ]
+        },
+        {
+          "name": "Gamberoni al lime e zenzero",
+          "description": "Gamberoni alla piastra con lime, zenzero fresco e riso basmati",
+          "price": 26.5,
+          "allergens": [
+            "Crostacei"
+          ]
+        },
+        {
+          "name": "Frittura mista di mare",
+          "description": "Calamari, gamberi e pesciolini in semola con verdure croccanti",
+          "price": 18,
+          "allergens": [
+            "Glutine",
+            "Crostacei",
+            "Molluschi",
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Grigliata mista di pesce",
+          "description": "Gamberoni, scampi, calamaro, trancio di pesce spada e salmone. Per una persona",
+          "price": 29,
+          "allergens": [
+            "Pesce",
+            "Crostacei",
+            "Molluschi"
+          ]
+        },
+        {
+          "name": "Pescato del giorno al sale",
+          "description": "Pesce del giorno cotto in crosta di sale, porzione per una persona. Chiedi al personale la specie disponibile",
+          "price": 32,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Rombo con patate e olive",
+          "description": "Trancio di rombo al forno con patate, olive taggiasche e timo",
+          "price": 27,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Seppie in umido con piselli",
+          "description": "Seppie stufate con piselli e pomodoro, crostino di polenta",
+          "price": 17,
+          "allergens": [
+            "Molluschi",
+            "Sedano"
+          ]
+        },
+        {
+          "name": "Pesce spada alla ghiotta",
+          "description": "Trancio di spada con pomodorini, capperi, olive e cipolla",
+          "price": 21,
+          "allergens": [
+            "Pesce"
+          ]
+        },
+        {
+          "name": "Astice alla catalana",
+          "description": "Astice intero di circa 500 g al vapore con verdure crude e agrumi",
+          "price": 35,
+          "allergens": [
+            "Crostacei",
+            "Sedano"
+          ]
+        },
+        {
+          "name": "Baccalà in pastella croccante",
+          "description": "Filetto di baccalà dissalato in pastella con maionese al limone",
+          "price": 17.5,
+          "allergens": [
+            "Pesce",
+            "Glutine",
+            "Uova"
+          ]
+        },
+        {
+          "name": "Parmigiana di melanzane",
+          "description": "Melanzane fritte, pomodoro, fior di latte e Parmigiano Reggiano",
+          "price": 14,
+          "allergens": [
+            "Latte",
+            "Glutine",
+            "Uova"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Contorni",
+      "products": [
+        {
+          "name": "Patate fritte",
+          "description": "Patate a bastoncino fritte al momento",
+          "price": 5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Patate al forno al rosmarino",
+          "description": "Patate novelle arrosto con rosmarino e aglio in camicia",
+          "price": 5.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Verdure grigliate",
+          "description": "Zucchine, melanzane, peperoni e radicchio con olio e origano",
+          "price": 6.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Insalata mista",
+          "description": "Lattughino, carote, pomodorini e rucola",
+          "price": 5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Insalata di finocchi e arance",
+          "description": "Finocchi, arance, olive nere e olio agli agrumi",
+          "price": 6,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Verdure di stagione saltate",
+          "description": "Verdure degli orti della valle saltate in padella con aglio",
+          "price": 6,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Spinaci al burro e limone",
+          "description": "Spinaci freschi saltati al burro con scorza di limone",
+          "price": 5.5,
+          "allergens": [
+            "Latte"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Caponata di verdure",
+          "description": "Melanzane, sedano, olive e capperi in agrodolce",
+          "price": 7.5,
+          "allergens": [
+            "Sedano"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Dessert",
+      "products": [
+        {
+          "name": "Tiramisù della casa",
+          "description": "Mascarpone, savoiardi e caffè espresso, preparato ogni giorno",
+          "price": 7,
+          "allergens": [
+            "Glutine",
+            "Uova",
+            "Latte"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Panna cotta ai frutti di bosco",
+          "description": "Panna cotta alla vaniglia con coulis di frutti di bosco",
+          "price": 6.5,
+          "allergens": [
+            "Latte"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Sorbetto al limone",
+          "description": "Sorbetto artigianale ai limoni della costiera",
+          "price": 6,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Sgroppino",
+          "description": "Sorbetto al limone montato con vodka e prosecco",
+          "price": 7,
+          "allergens": [
+            "Solfiti"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Cheesecake al pistacchio",
+          "description": "Base croccante, crema al formaggio e granella di pistacchio",
+          "price": 7.5,
+          "allergens": [
+            "Glutine",
+            "Latte",
+            "Uova",
+            "Frutta a guscio"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Semifreddo al torroncino",
+          "description": "Con salsa al caramello salato",
+          "price": 7,
+          "allergens": [
+            "Latte",
+            "Uova",
+            "Frutta a guscio"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Crème brûlée alla vaniglia",
+          "description": "Crema cotta alla vaniglia con crosta di zucchero caramellato",
+          "price": 6.5,
+          "allergens": [
+            "Latte",
+            "Uova"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Cannolo scomposto",
+          "description": "Cialda croccante, ricotta di pecora, gocce di cioccolato e pistacchio",
+          "price": 8,
+          "allergens": [
+            "Glutine",
+            "Latte",
+            "Frutta a guscio"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Tortino al cioccolato fondente",
+          "description": "Cuore caldo e fondente, servito con gelato alla vaniglia",
+          "price": 8.5,
+          "allergens": [
+            "Glutine",
+            "Uova",
+            "Latte",
+            "Soia"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Carta dei vini",
+      "products": [
+        {
+          "name": "Ortrugo dei Colli Piacentini DOC · calice",
+          "description": "Bianco frizzante del territorio, fresco e sapido",
+          "price": 5,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Vermentino di Gallura DOCG · calice",
+          "description": "Bianco sardo, note di macchia mediterranea e finale minerale",
+          "price": 6.5,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Falanghina del Sannio DOC · calice",
+          "description": "Bianco campano, fruttato e agrumato",
+          "price": 6,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Franciacorta Brut DOCG · calice",
+          "description": "Metodo classico, perlage fine e crosta di pane",
+          "price": 9,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Rosato del Salento IGT · calice",
+          "description": "Rosato da Negroamaro, fresco e di buona struttura",
+          "price": 5.5,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Gutturnio dei Colli Piacentini DOC · calice",
+          "description": "Rosso del territorio, servito fresco: ottimo con zuppe e grigliate",
+          "price": 5.5,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Ortrugo dei Colli Piacentini DOC · bottiglia",
+          "description": "Bianco frizzante del territorio, 0,75 l",
+          "price": 20,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Malvasia di Candia aromatica · bottiglia",
+          "description": "Colli Piacentini DOC, bianco secco e aromatico, 0,75 l",
+          "price": 24,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Vermentino di Gallura DOCG · bottiglia",
+          "description": "Bianco sardo, 0,75 l",
+          "price": 30,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Greco di Tufo DOCG · bottiglia",
+          "description": "Bianco irpino, strutturato e minerale, 0,75 l",
+          "price": 32,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Falanghina del Sannio DOC · bottiglia",
+          "description": "Bianco campano, 0,75 l",
+          "price": 26,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Verdicchio dei Castelli di Jesi Classico Superiore · bottiglia",
+          "description": "Bianco marchigiano DOC, note di mandorla, 0,75 l",
+          "price": 28.5,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Soave Classico DOC · bottiglia",
+          "description": "Bianco veneto, delicato e floreale, 0,75 l",
+          "price": 25,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Etna Bianco DOC · bottiglia",
+          "description": "Carricante vulcanico, teso e sapido, 0,75 l",
+          "price": 38,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Franciacorta Brut DOCG · bottiglia",
+          "description": "Metodo classico, 0,75 l",
+          "price": 45,
+          "allergens": [
+            "Solfiti"
+          ]
+        },
+        {
+          "name": "Champagne Brut · bottiglia",
+          "description": "Blend classico di Chardonnay e Pinot Noir, 0,75 l",
+          "price": 68,
+          "allergens": [
+            "Solfiti"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bibite",
+      "products": [
+        {
+          "name": "Acqua naturale",
+          "description": "Bottiglia in vetro 0,75 l",
+          "price": 2.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Acqua frizzante",
+          "description": "Bottiglia in vetro 0,75 l",
+          "price": 2.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Coca-Cola",
+          "description": "Bottiglia in vetro 33 cl",
+          "price": 3.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Coca-Cola Zero",
+          "description": "Bottiglia in vetro 33 cl",
+          "price": 3.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Aranciata",
+          "description": "Bottiglia in vetro 33 cl",
+          "price": 3.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Tè freddo alla pesca",
+          "description": "Bottiglia 33 cl",
+          "price": 3.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Birra chiara alla spina · piccola",
+          "description": "Lager chiara, 0,2 l",
+          "price": 3.5,
+          "allergens": [
+            "Glutine"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Birra chiara alla spina · media",
+          "description": "Lager chiara, 0,4 l",
+          "price": 5.5,
+          "allergens": [
+            "Glutine"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Birra artigianale IPA",
+          "description": "Birrificio artigianale della provincia, bottiglia 33 cl",
+          "price": 6.5,
+          "allergens": [
+            "Glutine"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Birra analcolica",
+          "description": "Bottiglia 33 cl",
+          "price": 4,
+          "allergens": [
+            "Glutine"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Caffè espresso",
+          "description": "Miscela arabica, anche decaffeinato su richiesta",
+          "price": 2,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Amaro della casa",
+          "description": "Infuso di erbe e agrumi, servito freddo",
+          "price": 4.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Limoncello artigianale",
+          "description": "Preparato con limoni non trattati, servito ghiacciato",
+          "price": 4,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Grappa bianca",
+          "description": "Grappa giovane di vinacce, 4 cl",
+          "price": 5,
+          "allergens": [],
+          "vegetarian": true
+        }
+      ]
+    }
+  ]
+}

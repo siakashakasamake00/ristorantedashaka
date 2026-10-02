@@ -1,0 +1,51 @@
+{
+  "_istruzioni": "Scheda del cliente: cambia questi valori e lancia  python3 sorgenti/build.py  per rigenerare index.html, cucina.html, tavoli.html e admin.html.",
+  "dati": "da-shaka.json",
+  "prodotti_attesi": 96,
+  "cartella_foto": "foto",
+  "copertina": "copertina.jpg",
+  "tipo_locale": "ristorante di pesce",
+  "cameriere": {
+    "ai": false,
+    "nome": "Marina",
+    "ruolo": "la cameriera virtuale",
+    "ruolo_breve": "Cameriera virtuale",
+    "carattere": "Sei calda, accogliente e un po' marinara; dai del tu con garbo.",
+    "saluto": "Posso consigliarti un piatto, aiutarti con gli allergeni o trovare il vino giusto.",
+    "suggerimenti": [
+      "Il menu del giorno",
+      "Cosa mi consigli stasera?",
+      "Sono allergico ai crostacei",
+      "Piatti vegetariani",
+      "Un vino per il crudo",
+      "Siamo in 4 con 2 bambini",
+      "Orari e servizi"
+    ],
+    "foto": "cameriere.jpg"
+  },
+  "colori": {
+    "_nota": "principale = colore scuro dell'intestazione (con le sue sfumature), accento = colore dei pulsanti",
+    "principale-950": "#062536",
+    "principale-900": "#0a3550",
+    "principale-800": "#0f4563",
+    "principale-700": "#13587a",
+    "principale-200": "#b9d7e4",
+    "principale-100": "#dcebf1",
+    "principale-50": "#eef6f9",
+    "accento": "#ef6f4f",
+    "accento-600": "#de5a3b",
+    "accento-700": "#b9442a",
+    "accento-200": "#ffc9b8",
+    "accento-50": "#fff1ec"
+  },
+  "prefissi_categorie": {
+    "Menu del giorno": "G",
+    "Antipasti": "A",
+    "Primi": "P",
+    "Secondi": "S",
+    "Contorni": "C",
+    "Dessert": "D",
+    "Carta dei vini": "V",
+    "Bibite": "B"
+  }
+}

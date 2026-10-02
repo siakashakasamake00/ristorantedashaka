@@ -1,0 +1,9 @@
+{
+  "name": "da-shaka-menu",
+  "private": true,
+  "type": "module",
+  "description": "Menu digitale Da Shaka con Marina e ordini al tavolo (Netlify Functions + Netlify Blobs)",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.1"
+  }
+}

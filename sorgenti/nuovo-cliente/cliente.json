@@ -1,0 +1,34 @@
+{
+  "_istruzioni": "Esempio di un secondo cliente. Da sorgenti/:  OUT=../sito-nuovo-cliente python3 build.py nuovo-cliente/cliente.json",
+  "dati": "nuovo-cliente/menu.json",
+  "cartella_foto": "sorgenti/nuovo-cliente/foto",
+  "tipo_locale": "trattoria di cucina piacentina",
+  "cameriere": {
+    "nome": "Giulio",
+    "ruolo": "il cameriere virtuale",
+    "ruolo_breve": "Cameriere virtuale",
+    "carattere": "Sei gioviale e alla mano, con un tocco di dialetto piacentino; dai del tu.",
+    "saluto": "Ti racconto i piatti della tradizione e ti trovo il vino giusto.",
+    "suggerimenti": [
+      "Cosa mi consigli?",
+      "Un piatto tipico",
+      "Piatti vegetariani",
+      "Che vino abbino?"
+    ]
+  },
+  "colori": {
+    "principale-950": "#2b1210",
+    "principale-900": "#3d1a16",
+    "principale-800": "#52231d",
+    "principale-700": "#6e3027",
+    "principale-200": "#e8cfc6",
+    "principale-100": "#f3e4de",
+    "principale-50": "#faf3f0",
+    "accento": "#c28a2c",
+    "accento-600": "#a87520",
+    "accento-700": "#86591a",
+    "accento-200": "#f1dcae",
+    "accento-50": "#fbf4e4"
+  },
+  "prefissi_categorie": {}
+}

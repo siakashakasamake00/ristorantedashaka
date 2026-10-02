@@ -1,0 +1,201 @@
+{
+  "restaurant": {
+    "name": "Trattoria Esempio",
+    "slug": "trattoria-esempio",
+    "demo": true,
+    "tagline": "Cucina piacentina di casa",
+    "order_prefix": "TE",
+    "address": "Via Esempio 1",
+    "postal_code": "29121",
+    "city": "Piacenza",
+    "province": "PC",
+    "region": "Emilia-Romagna",
+    "country": "Italia",
+    "phone": "+39 0523 000 000",
+    "email": "info@esempio.it",
+    "website": "www.esempio.it",
+    "description": "Modello di esempio: sostituisci questi testi con quelli del locale.",
+    "opening_hours": [
+      {
+        "day": "Lunedì",
+        "hours": "Chiuso"
+      },
+      {
+        "day": "Martedì",
+        "hours": "12:00 – 14:30 · 19:00 – 22:30"
+      },
+      {
+        "day": "Mercoledì",
+        "hours": "12:00 – 14:30 · 19:00 – 22:30"
+      },
+      {
+        "day": "Giovedì",
+        "hours": "12:00 – 14:30 · 19:00 – 22:30"
+      },
+      {
+        "day": "Venerdì",
+        "hours": "12:00 – 14:30 · 19:00 – 23:00"
+      },
+      {
+        "day": "Sabato",
+        "hours": "12:00 – 14:30 · 19:00 – 23:00"
+      },
+      {
+        "day": "Domenica",
+        "hours": "12:00 – 15:00"
+      }
+    ],
+    "closing_days": "Lunedì.",
+    "tables_count": 12,
+    "seats": 40,
+    "services": [
+      "Prenotazione consigliata",
+      "Opzioni vegetariane"
+    ],
+    "info": "Coperto € 2. Per allergie chiedi al personale."
+  },
+  "categories": [
+    {
+      "name": "Antipasti",
+      "products": [
+        {
+          "name": "Salumi piacentini DOP",
+          "description": "Coppa, pancetta e salame con gnocco fritto",
+          "price": 14,
+          "allergens": [
+            "Glutine"
+          ]
+        },
+        {
+          "name": "Torta di erbette",
+          "description": "Sfoglia sottile ripiena di bietole e ricotta",
+          "price": 9,
+          "allergens": [
+            "Glutine",
+            "Latte",
+            "Uova"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Primi",
+      "products": [
+        {
+          "name": "Pisarei e fasò",
+          "description": "Gnocchetti di pane con fagioli borlotti e pomodoro",
+          "price": 12,
+          "allergens": [
+            "Glutine",
+            "Sedano"
+          ]
+        },
+        {
+          "name": "Tortelli con la coda",
+          "description": "Ricotta ed erbette, burro fuso e salvia",
+          "price": 13,
+          "allergens": [
+            "Glutine",
+            "Latte",
+            "Uova"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Anolini in brodo",
+          "description": "Ripieni di stracotto, in brodo di terza",
+          "price": 14,
+          "allergens": [
+            "Glutine",
+            "Uova",
+            "Latte",
+            "Sedano"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Secondi",
+      "products": [
+        {
+          "name": "Picula ad caval",
+          "description": "Stracotto di cavallo al pomodoro con polenta",
+          "price": 17,
+          "allergens": [
+            "Sedano"
+          ]
+        },
+        {
+          "name": "Guancialino brasato",
+          "description": "Brasato al Gutturnio con purè",
+          "price": 18,
+          "allergens": [
+            "Latte",
+            "Solfiti",
+            "Sedano"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dolci",
+      "products": [
+        {
+          "name": "Torta di latte",
+          "description": "Budino al forno con amaretti",
+          "price": 6,
+          "allergens": [
+            "Latte",
+            "Uova",
+            "Frutta a guscio",
+            "Glutine"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Vini",
+      "products": [
+        {
+          "name": "Gutturnio DOC (calice)",
+          "description": "Rosso dei Colli Piacentini",
+          "price": 5,
+          "allergens": [
+            "Solfiti"
+          ],
+          "vegetarian": true
+        },
+        {
+          "name": "Ortrugo frizzante (bottiglia)",
+          "description": "Bianco vivace e fresco",
+          "price": 18,
+          "allergens": [
+            "Solfiti"
+          ],
+          "vegetarian": true
+        }
+      ]
+    },
+    {
+      "name": "Bibite",
+      "products": [
+        {
+          "name": "Acqua naturale 75 cl",
+          "description": "",
+          "price": 2.5,
+          "allergens": [],
+          "vegetarian": true
+        },
+        {
+          "name": "Caffè",
+          "description": "",
+          "price": 1.5,
+          "allergens": [],
+          "vegetarian": true
+        }
+      ]
+    }
+  ]
+}
