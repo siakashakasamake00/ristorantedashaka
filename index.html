@@ -81,7 +81,22 @@ input,textarea,select{font:inherit;color:inherit}
 .search svg{flex-shrink:0;color:var(--muted)}
 .filterbtn{height:42px;padding:0 14px;border-radius:14px;background:#fff;border:1px solid var(--line);font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;flex-shrink:0}
 .filterbtn .n{background:var(--coral);color:#fff;border-radius:99px;min-width:20px;height:20px;display:grid;place-items:center;font-size:11px;padding:0 5px}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none}
+.rate{margin:16px 0 0;padding:16px;border-radius:18px;background:var(--sea-50);text-align:center}
+.rate b{display:block;font-family:var(--display);font-size:20px;color:var(--sea-950)}
+.rate p{margin:4px 0 0;font-size:13.5px;color:var(--ink-2)}
+.rate .stars{display:flex;justify-content:center;gap:6px;margin:10px 0 4px}
+.rate .stars button{font-size:34px;line-height:1;color:#c9d6dc;padding:2px;transition:transform .1s,color .1s}
+.rate .stars button.on{color:#f5b400}
+.rate .stars button:active{transform:scale(1.15)}
+.rate textarea{margin-top:8px;background:#fff}
+.rate-err{color:#b42318;font-size:13px;font-weight:600;margin:6px 0 0;min-height:0}
+.mapbox{padding:8px 16px 0}
+.mapbox h2{margin:0;font-family:var(--display);font-size:24px;color:var(--sea-900)}
+.mapbox p{margin:4px 0 12px;color:var(--ink-2);font-size:14px}
+.mapframe{border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--soft);aspect-ratio:4/3;max-height:340px;width:100%}
+.mapframe iframe{width:100%;height:100%;border:0;display:block}
+.mapbox .btn{margin-top:12px;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 12px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{height:36px;padding:0 15px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:var(--ink-2);flex-shrink:0}
 .chip.on{background:var(--sea-900);border-color:var(--sea-900);color:#fff}
@@ -291,7 +306,7 @@ textarea.in:focus{border-color:var(--sea-700);background:#fff}
 <div class="bar">
   <div class="wrap">
     <div id="trackBox" style="padding:10px 16px 0" hidden></div>
-    <div class="search-row">
+    <div class="search-row" hidden>
       <label class="search" for="q">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input id="q" type="search" placeholder="Cerca un piatto, un vino…" autocomplete="off">
@@ -303,6 +318,12 @@ textarea.in:focus{border-color:var(--sea-700);background:#fff}
 </div>
 
 <main class="wrap" id="menu"></main>
+<section class="wrap mapbox" id="mapBox" hidden>
+  <h2>Dove siamo</h2>
+  <p id="mapAddr"></p>
+  <div class="mapframe"><iframe id="mapFrame" title="Mappa" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+  <a class="btn sea full" id="mapGo" target="_blank" rel="noopener">📍 Indicazioni stradali</a>
+</section>
 
 <div class="cartbar" id="cartbar" hidden></div>
 
@@ -407,6 +428,15 @@ function renderHeader(){
   $("rTag").textContent = R.tagline || "";
   $("rAddr").textContent = [R.address, R.city && (R.city + (R.province ? " (" + R.province + ")" : ""))].filter(Boolean).join(" · ");
   document.title = R.name + " · Menu";
+  var addr = [R.address, [R.postal_code, R.city].filter(Boolean).join(" "), R.province].filter(Boolean).join(", ");
+  if (addr) {
+    var q = encodeURIComponent(R.name + ", " + addr);
+    $("mapBox").hidden = false;
+    $("mapAddr").textContent = addr;
+    var src = "https://maps.google.com/maps?q=" + encodeURIComponent(addr) + "&z=16&output=embed";
+    if ($("mapFrame").getAttribute("src") !== src) $("mapFrame").setAttribute("src", src);
+    $("mapGo").href = "https://www.google.com/maps/dir/?api=1&destination=" + q;
+  }
   var tel = String(R.phone || "").replace(/[^\d+]/g, "");
   $("callBtn").href = tel ? "tel:" + tel : "#";
   $("callBtn").hidden = !tel;
@@ -466,6 +496,7 @@ function secHtml(c, i, items){
 }
 function renderMenu(){
   var html = "", shown = 0, cats = DATA.categories;
+  if (S.veg || S.exclude.length) html += '<button class="back" data-reset="1" style="background:var(--coral-50);border-color:var(--coral-200);color:var(--coral-700)">✕ ' + (S.veg ? "Solo vegetariani" : "Senza " + esc(S.exclude.join(", ").toLowerCase())) + " · mostra tutto</button> ";
   if (S_SEC !== null && !cats[S_SEC]) S_SEC = null;
   if (S.q) {
     // la ricerca guarda in tutto il menu
@@ -548,7 +579,7 @@ function renderCartBar(){
   // con il carrello pieno, Marina si sposta dentro la barra: una sola riga compatta in basso
   $("fab").hidden = !!n;
   $("fab").style.bottom = "calc(18px + env(safe-area-inset-bottom,0px))";
-  menuEl.style.paddingBottom = n ? "120px" : "110px";
+  menuEl.style.paddingBottom = "16px"; $("mapBox").style.paddingBottom = n ? "120px" : "110px";
   if (!n) return;
   var av = document.querySelector("#fab .avatar");
   bar.innerHTML = '<div class="cartrow">' +
@@ -827,7 +858,7 @@ function showDone(where, order, reopen){
   var body = '<div class="done"><div class="check">✓</div><h2 style="font-family:var(--display);font-size:28px;margin:16px 0 6px;color:var(--sea-950);letter-spacing:.04em">ORDINE INVIATO</h2>' +
     '<p style="margin:0;color:var(--ink-2)">' + (order ? (where.asporto ? "Il tuo ordine da asporto è stato inviato alla cucina." : "Il tuo ordine è stato inviato alla cucina.") : "Anteprima: in questa pagina l'ordine non viene trasmesso.") + '</p>' +
     '<div class="kv" style="grid-template-columns:1fr 1fr;text-align:center;margin:18px 0 0;gap:0"><div style="padding:12px;border-right:1px solid var(--line)"><span class="lbl" style="margin:0">' + (where.asporto ? "Ritiro alle" : "Tavolo") + '</span><b class="tn" style="font-size:30px">' + (where.asporto ? where.time : where.table) + '</b></div><div style="padding:12px"><span class="lbl" style="margin:0">Numero ordine</span><b class="tn" style="font-size:22px">#' + esc(code) + "</b></div></div>" +
-    (order ? '<p id="ordStatus" style="display:inline-flex;align-items:center;gap:8px;margin:14px 0 0;padding:8px 14px;border-radius:99px;background:var(--sea-50);font-weight:700;font-size:14px"><span class="dot" style="width:9px;height:9px;border-radius:99px;background:' + STATUS_DOT.new + '"></span><span>' + TXT.new + "</span></p>" : "") + "</div>" +
+    (order ? '<p id="ordStatus" style="display:inline-flex;align-items:center;gap:8px;margin:14px 0 0;padding:8px 14px;border-radius:99px;background:var(--sea-50);font-weight:700;font-size:14px"><span class="dot" style="width:9px;height:9px;border-radius:99px;background:' + STATUS_DOT.new + '"></span><span>' + TXT.new + "</span></p>" : "") + "</div>" + (order ? '<div id="rateBox"></div>' : "") +
     '<div class="receipt" style="margin-top:16px"><div class="receipt-b">' + lines + (note ? '<p class="notice" style="margin-top:6px"><b>Note:</b> ' + esc(note) + "</p>" : "") + '<div class="r-tot"><b>TOTALE</b><b class="tn">' + euro(tot) + "</b></div></div></div>";
   if (!reopen) { S.cart = []; S.note = ""; persist(); }
   openSheet("done", reopen ? { t: "Il tuo ordine", s: R.name } : { t: "Grazie!", s: R.name }, body, '<button class="btn sea full" data-close="1">Torna al menu</button>');
@@ -837,6 +868,7 @@ function showDone(where, order, reopen){
   if (order) {
     if (!reopen) { var mine = (store("cv-orders-" + R.order_prefix) || []).filter(function(x){ return x.id !== order.id; }); mine.unshift({ id: order.id, t: order.token, code: order.code, at: Date.now(), st: "new", asporto: !!where.asporto }); store("cv-orders-" + R.order_prefix, mine.slice(0, 10)); }
     var st0 = order.status || "new"; if (st0 !== "new") { var el0 = $("ordStatus"); if (el0) { el0.querySelector(".dot").style.background = STATUS_DOT[st0]; el0.lastChild.textContent = TXT[st0]; } }
+    if (st0 === "served") renderRate(order);
     clearInterval(pollTimer);
     pollTimer = setInterval(async function(){
       var el = $("ordStatus"); if (!el || layerKind !== "done") { clearInterval(pollTimer); return; }
@@ -845,10 +877,44 @@ function showDone(where, order, reopen){
         var j = await r.json(); if (!j.status) return;
         el.querySelector(".dot").style.background = STATUS_DOT[j.status]; el.lastChild.textContent = TXT[j.status];
         saveSt(order.id, j.status); renderTrack();
+        if (j.status === "served") renderRate(order);
         if (j.status === "served" || j.status === "cancelled") clearInterval(pollTimer);
       } catch (e) {}
     }, 5000);
   }
+}
+
+// ---------- voto del cliente (dopo "Servito") + invito alla recensione Google ----------
+function rated(id){ return (store("cv-rated-" + R.order_prefix) || []).indexOf(id) >= 0; }
+function googleBox(){
+  return R.google_review_url ? '<a class="btn coral full" style="margin-top:10px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px" href="' + esc(R.google_review_url) + '" target="_blank" rel="noopener">⭐ Lascia una recensione su Google</a>' : "";
+}
+function renderRate(order){
+  var box = $("rateBox"); if (!box || box.dataset.on) return;
+  box.dataset.on = "1";
+  if (rated(order.id)) { box.innerHTML = '<div class="rate"><b>Grazie per il tuo voto!</b>' + (R.google_review_url ? "<p>Se ti va, raccontalo anche su Google: per noi conta molto.</p>" + googleBox() : "") + "</div>"; return; }
+  var stars = 0;
+  box.innerHTML = '<div class="rate"><b>Com\'è andata?</b><p>Dai un voto alla tua esperienza: ci aiuta a migliorare.</p>' +
+    '<div class="stars" role="radiogroup" aria-label="Voto">' + [1, 2, 3, 4, 5].map(function(n){ return '<button type="button" role="radio" aria-checked="false" data-star="' + n + '" aria-label="' + n + (n === 1 ? " stella" : " stelle") + '">★</button>'; }).join("") + "</div>" +
+    '<textarea class="in" id="rateTxt" rows="2" maxlength="600" placeholder="Vuoi dirci qualcosa? (facoltativo)" hidden></textarea>' +
+    '<button type="button" class="btn sea full" id="rateSend" style="margin-top:10px" hidden>Invia il voto</button><p class="rate-err" id="rateErr" role="alert"></p></div>';
+  box.querySelector(".stars").onclick = function(e){
+    var b = e.target.closest("[data-star]"); if (!b) return;
+    stars = +b.dataset.star;
+    box.querySelectorAll("[data-star]").forEach(function(x){ var on = +x.dataset.star <= stars; x.classList.toggle("on", on); x.setAttribute("aria-checked", +x.dataset.star === stars); });
+    $("rateTxt").hidden = false; $("rateSend").hidden = false;
+  };
+  $("rateSend").onclick = async function(){
+    var btn = this; btn.disabled = true; btn.textContent = "Invio…";
+    try {
+      var r = await fetch("/api/recensioni", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: order.id, t: order.token, stars: stars, comment: $("rateTxt").value }) });
+      var j = await r.json().catch(function(){ return {}; });
+      if (!r.ok && r.status !== 409) throw new Error(j.error || "errore");
+      var l = store("cv-rated-" + R.order_prefix) || []; l.push(order.id); store("cv-rated-" + R.order_prefix, l.slice(-20));
+      box.innerHTML = '<div class="rate"><b>Grazie per il tuo voto!</b>' + (R.google_review_url ? "<p>Se ti va, raccontalo anche su Google: per noi conta molto.</p>" + googleBox() : "<p>A presto da " + esc(R.name) + "!</p>") + "</div>";
+      renderTrack();
+    } catch (e) { btn.disabled = false; btn.textContent = "Invia il voto"; $("rateErr").textContent = "Voto non inviato: " + (e.message || e) + ". Riprova."; }
+  };
 }
 
 // ---------- "Il tuo ordine": lo stato resta visibile anche se il cliente chiude la scheda o la pagina ----------
@@ -872,7 +938,8 @@ function renderTrack(){
   var box = $("trackBox"), x = trackTarget();
   if (!x) { box.hidden = true; box.innerHTML = ""; return; }
   box.hidden = false;
-  box.innerHTML = '<button class="track" id="trackBtn"><span class="dot" style="background:' + STATUS_DOT[x.st || "new"] + '"></span><span class="tt">Il tuo ordine #' + esc(x.code) + "<small>" + esc(orderTxt(x)) + '</small></span><span class="go">Vedi ›</span></button>';
+  var toRate = x.st === "served" && !rated(x.id);
+  box.innerHTML = '<button class="track" id="trackBtn"><span class="dot" style="background:' + STATUS_DOT[x.st || "new"] + '"></span><span class="tt">Il tuo ordine #' + esc(x.code) + "<small>" + esc(orderTxt(x)) + '</small></span><span class="go">' + (toRate ? "Lascia un voto ★" : "Vedi ›") + "</span></button>";
   $("trackBtn").onclick = function(){ openMyOrder(x); };
 }
 async function fetchOrder(x){
