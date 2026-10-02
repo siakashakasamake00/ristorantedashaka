@@ -382,6 +382,59 @@ function indexData(){
 }
 indexData();
 var DEMO = !!window.claude || location.protocol === "file:";
+
+// ---------- statistiche delle visite (anonime, nessun dato personale) ----------
+var TK = (function(){
+  var off = DEMO;
+  try { for (var i = 0; i < localStorage.length; i++) if (/^cv-admin-pin/.test(localStorage.key(i))) off = true; } catch (e) {} // il titolare non conta
+  try { if (/(^|&)notrack/.test(location.search.slice(1))) { localStorage.setItem("cv-notrack", "1"); } if (localStorage.getItem("cv-notrack")) off = true; } catch (e) {}
+  function rid(){ return (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).slice(0, 20); }
+  var vid; try { vid = localStorage.getItem("cv-vid"); if (!vid) { vid = rid(); localStorage.setItem("cv-vid", vid); } } catch (e) { vid = rid(); }
+  var R0 = { sid: rid(), vid: vid, start: Date.now(), src: /[?&]tavolo=\d/.test(location.search) ? "qr" : "sito",
+    dev: matchMedia("(min-width: 900px) and (pointer: fine)").matches ? "desktop" : "mobile",
+    dur: 0, ev: {}, sec: {}, secTime: {}, dishOpen: {}, dishAdd: {} };
+  var activeFrom = document.hidden ? 0 : Date.now(), curSec = null, secFrom = 0, dirty = true;
+  function now(){ return Date.now(); }
+  function flushTime(){
+    var t = now();
+    if (activeFrom) { R0.dur += Math.round((t - activeFrom) / 1000); activeFrom = document.hidden ? 0 : t; }
+    if (curSec && secFrom) { R0.secTime[curSec] = (R0.secTime[curSec] || 0) + Math.round((t - secFrom) / 1000); secFrom = document.hidden ? 0 : t; }
+  }
+  function send(){
+    if (off || !dirty) return;
+    flushTime(); dirty = false;
+    var body = JSON.stringify(R0);
+    try { if (navigator.sendBeacon && navigator.sendBeacon("/api/eventi", new Blob([body], { type: "text/plain" }))) return; } catch (e) {}
+    try { fetch("/api/eventi", { method: "POST", body: body, keepalive: true }); } catch (e) {}
+  }
+  document.addEventListener("visibilitychange", function(){
+    if (document.hidden) { send(); activeFrom = 0; secFrom = 0; }
+    else { activeFrom = now(); if (curSec) secFrom = now(); dirty = true; }
+  });
+  addEventListener("pagehide", send);
+  setTimeout(send, 5000);                       // conta anche chi resta pochi secondi
+  setInterval(function(){ dirty = true; send(); }, 30000);
+  return {
+    ev: function(n){ R0.ev[n] = (R0.ev[n] || 0) + 1; dirty = true; },
+    sec: function(name){ flushTime(); curSec = name; secFrom = name ? now() : 0; if (name) R0.sec[name] = (R0.sec[name] || 0) + 1; dirty = true; },
+    dish: function(id){ R0.dishOpen[id] = (R0.dishOpen[id] || 0) + 1; dirty = true; },
+    add: function(id, q){ R0.dishAdd[id] = (R0.dishAdd[id] || 0) + (q || 1); dirty = true; },
+    send: function(){ dirty = true; send(); }
+  };
+})();
+// pulsanti e azioni del cliente
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if (t.closest("#callBtn")) TK.ev("chiama");
+  else if (t.closest("#bookBtn")) TK.ev("prenota");
+  else if (t.closest("#openInfo")) TK.ev("info");
+  else if (t.closest("#fab, .cmarina")) TK.ev("marina");
+  else if (t.closest("#mapGo")) TK.ev("indicazioni");
+  else if (t.closest('a[href*="google"][href*="review"], a[href*="g.page"]')) TK.ev("recensione_google");
+  else if (t.closest("#trackBtn")) TK.ev("stato_ordine");
+  else if (t.closest("[data-cart]")) TK.ev("carrello");
+  else if (t.closest("[data-review]")) TK.ev("riepilogo");
+}, true);
 var PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" fill="#eef3f5"/><circle cx="48" cy="50" r="24" fill="none" stroke="#b9c7cf" stroke-width="3"/><circle cx="48" cy="50" r="14" fill="none" stroke="#d4dde2" stroke-width="2"/></svg>');
 var orderRef = null;
 function newRef(){ return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : uid() + uid() + uid() + uid(); }
@@ -538,6 +591,8 @@ function renderMenu(){
 // ---------- navigazione tra le sezioni ----------
 function goSec(i, push){
   S_SEC = i;
+  TK.sec(i === null ? null : DATA.categories[i] && DATA.categories[i].name);
+  if (i === null) TK.ev("sezioni_home");
   if (S.q) { S.q = ""; $("q").value = ""; }
   if (push !== false) {
     var h = i === null ? "" : "#" + slugCat(DATA.categories[i].name);
@@ -561,6 +616,7 @@ function addToCart(id, qty, note){
   qty = Math.max(1, Math.min(20, qty || 1)); note = (note || "").trim().slice(0, 200);
   var l = S.cart.filter(function(x){ return x.id === id && (x.note || "") === note; })[0];
   if (l) l.qty = Math.min(50, l.qty + qty); else S.cart.push({ key: uid(), id: id, qty: qty, note: note });
+  TK.add(id, qty);
   orderRef = null; persist(); return true;
 }
 function minusOne(id){
@@ -619,6 +675,7 @@ document.addEventListener("keydown", function(e){ if (e.key === "Escape") { if (
 // scheda del piatto
 function openDish(id){
   var p = BY[id]; if (!p) return;
+  TK.dish(id);
   var q = 1;
   var body = '<img class="big" src="' + img(id) + '" alt="' + esc(p.name) + '">' +
     '<p style="margin:0 0 10px;color:var(--ink-2)">' + esc(p.desc) + "</p>" +
@@ -694,6 +751,7 @@ $("bookBtn").onclick = function(){
       "📅 " + when + "\n🕗 ore " + BK.time + "\n👥 " + BK.ppl + (BK.ppl === 1 ? " persona" : " persone") + "\n👤 " + name +
       (BK.note ? "\n📝 " + BK.note : "") + "\nGrazie!";
     var num = waNumber();
+    TK.ev("prenota_whatsapp"); TK.send();
     window.open("https://wa.me/" + num + "?text=" + encodeURIComponent(txt), "_blank", "noopener");
     closeSheet();
   };
@@ -833,6 +891,7 @@ function openReview(){
       var j = await r.json().catch(function(){ return {}; });
       if (!r.ok || !j.code) throw new Error(j.error || "errore " + r.status);
       orderRef = null;
+      TK.ev(where.asporto ? "ordine_asporto" : "ordine"); TK.send();
       showDone(where, j);
     } catch (e) {
       sending = false; btn.disabled = false; btn.textContent = label;
@@ -907,6 +966,7 @@ function renderRate(order){
   $("rateSend").onclick = async function(){
     var btn = this; btn.disabled = true; btn.textContent = "Invio…";
     try {
+      TK.ev("voto");
       var r = await fetch("/api/recensioni", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: order.id, t: order.token, stars: stars, comment: $("rateTxt").value }) });
       var j = await r.json().catch(function(){ return {}; });
       if (!r.ok && r.status !== 409) throw new Error(j.error || "errore");
@@ -1274,6 +1334,7 @@ function setBusy(b){ S.busy = b; sendBtn.classList.toggle("stop", b); sendBtn.se
 
 async function ask(text){
   if (S.busy) return;
+  TK.ev("marina_msg");
   text = String(text).slice(0, 600);
   bubble("u", esc(text));
   S.turns.push({ role: "user", content: "[Carrello attuale: " + cartText() + "]\n" + text });
