@@ -138,19 +138,19 @@ main{padding:18px 16px 40px}
 .foot{text-align:center;font-size:11.5px;color:var(--muted);margin-top:18px}
 
 /* ---------- carrello fisso ---------- */
-.cartbar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:0 12px calc(12px + env(safe-area-inset-bottom,0px))}
-.cartcard{max-width:616px;margin:0 auto;background:#fff;border-radius:24px;box-shadow:0 -10px 40px rgba(6,37,54,.2);border:1px solid var(--line);overflow:hidden}
-.cartbar.enter .cartcard{animation:up .25s ease both}
-.cart-h{width:100%;display:flex;align-items:center;gap:8px;padding:12px 18px 4px;text-align:left}
-.cart-h b{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sea-950)}
-.cart-h .cnt{font-size:11px;font-weight:800;background:var(--sea-50);color:var(--sea-800);padding:2px 8px;border-radius:99px}
-.cart-h .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
-.cart-lines{list-style:none;margin:0;padding:2px 18px 0;font-size:14px}
-.cart-lines li{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
-.cart-lines li span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cart-f{display:flex;align-items:center;gap:12px;padding:8px 18px 14px}
-.cart-f small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.cart-f .tot{font-size:21px;font-weight:800;color:var(--sea-950)}
+.cartbar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:0 12px calc(12px + env(safe-area-inset-bottom,0px));pointer-events:none}
+.cartrow{max-width:616px;margin:0 auto;display:flex;gap:10px;align-items:center;pointer-events:auto}
+.cartbar.enter .cartrow{animation:up .25s ease both}
+.cmarina{width:56px;height:56px;border-radius:99px;flex-shrink:0;background:var(--sea-950);display:grid;place-items:center;box-shadow:0 12px 26px -10px rgba(6,37,54,.7);position:relative}
+.cmarina .avatar{width:48px;height:48px;border:2px solid rgba(255,255,255,.85)}
+.cmarina .online{position:absolute;right:-1px;bottom:-1px;width:12px;height:12px;border-radius:99px;background:#22c55e;border:2px solid var(--sea-950)}
+.cartpill{flex:1;min-width:0;height:56px;border-radius:99px;background:var(--coral);color:#fff;display:flex;align-items:center;gap:12px;padding:0 18px 0 8px;box-shadow:0 12px 26px -10px rgba(239,111,79,.8);text-align:left}
+.cartpill .cic{position:relative;width:40px;height:40px;border-radius:99px;background:rgba(255,255,255,.2);display:grid;place-items:center;flex-shrink:0}
+.cartpill .cic b{position:absolute;top:-3px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:#fff;color:var(--coral-700);font-size:11.5px;font-weight:800;display:grid;place-items:center}
+.cartpill .ctt{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.cartpill .ctt small{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.cartpill .ctt b{font-size:19px;font-weight:800}
+.cartpill .cgo{margin-left:auto;font-size:14px;font-weight:800;white-space:nowrap}
 .btn{height:50px;border-radius:16px;padding:0 20px;font-weight:800;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase}
 .btn.sea{background:var(--sea-900);color:#fff}
 .btn.coral{background:var(--coral);color:#fff;box-shadow:0 10px 20px -10px rgba(239,111,79,.9)}
@@ -159,6 +159,8 @@ main{padding:18px 16px 40px}
 .btn:disabled{opacity:.45}
 
 /* ---------- Marina: pulsante ---------- */
+.fab.mini{padding:0 4px;gap:0;right:auto;left:16px}
+.fab.mini .fab-t{display:none}
 .fab{position:fixed;right:16px;z-index:31;display:flex;align-items:center;gap:10px;height:54px;padding:0 18px 0 8px;border-radius:99px;background:var(--sea-950);color:#fff;font-weight:800;box-shadow:0 14px 30px -10px rgba(6,37,54,.7);transition:bottom .25s}
 .avatar{width:40px;height:40px;border-radius:99px;background:radial-gradient(circle at 30% 30%,#ff9b7f,var(--coral) 60%,var(--coral-600));display:grid;place-items:center;flex-shrink:0;position:relative}
 .avatar svg{width:22px;height:22px}
@@ -306,7 +308,7 @@ textarea.in:focus{border-color:var(--sea-700);background:#fff}
 
 <button class="fab" id="fab" aria-label="Chiedi a Marina, la cameriera virtuale">
   <span class="avatar"><img src="data:image/webp;base64,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" alt=""><span class="online"></span></span>
-  Chiedi a Marina
+  <span class="fab-t">Chiedi a Marina</span>
 </button>
 
 <div id="layer"></div>
@@ -543,13 +545,18 @@ function renderCartBar(){
   bar.hidden = !n;
   if (n && !barShown) { bar.classList.add("enter"); setTimeout(function(){ bar.classList.remove("enter"); }, 320); }
   barShown = !!n;
-  $("fab").style.bottom = n ? (S.cartOpen ? "calc(" + (170 + Math.min(S.cart.length, 3) * 22) + "px + env(safe-area-inset-bottom,0px))" : "calc(128px + env(safe-area-inset-bottom,0px))") : "calc(18px + env(safe-area-inset-bottom,0px))";
-  menuEl.style.paddingBottom = n ? "300px" : "110px";
+  // con il carrello pieno, Marina si sposta dentro la barra: una sola riga compatta in basso
+  $("fab").hidden = !!n;
+  $("fab").style.bottom = "calc(18px + env(safe-area-inset-bottom,0px))";
+  menuEl.style.paddingBottom = n ? "120px" : "110px";
   if (!n) return;
-  var last = S.cart.slice(-3);
-  bar.innerHTML = '<div class="cartcard"><button class="cart-h" data-toggle="1" aria-expanded="' + S.cartOpen + '"><span aria-hidden="true">🛒</span><b>Il tuo ordine</b><span class="cnt">' + n + (n === 1 ? " articolo" : " articoli") + '</span><span class="chev" style="transform:rotate(' + (S.cartOpen ? 0 : 180) + 'deg)">▾</span></button>' +
-    (S.cartOpen ? '<ul class="cart-lines">' + last.map(function(l){ var p = BY[l.id]; return '<li><span><b class="tn">' + l.qty + " ×</b> " + esc(p.name) + '</span><span class="tn">' + euro(p.price * l.qty) + "</span></li>"; }).join("") + (S.cart.length > 3 ? '<li style="color:var(--muted);font-size:12px">+ altre ' + (S.cart.length - 3) + " righe</li>" : "") + "</ul>" : "") +
-    '<div class="cart-f"><div><small>Totale</small><span class="tot tn">' + euro(total()) + '</span></div><button class="btn sea" style="margin-left:auto" data-cart="1">Visualizza ordine</button></div></div>';
+  var av = document.querySelector("#fab .avatar");
+  bar.innerHTML = '<div class="cartrow">' +
+    '<button class="cmarina" data-marina="1" aria-label="Chiedi a Marina">' + (av ? av.outerHTML : "💬") + "</button>" +
+    '<button class="cartpill" data-cart="1" aria-label="Vedi il tuo ordine">' +
+      '<span class="cic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><b class="tn">' + n + "</b></span>" +
+      '<span class="ctt"><small>Il tuo ordine</small><b class="tn">' + euro(total()) + "</b></span>" +
+      '<span class="cgo">Vedi ordine ›</span></button></div>';
 }
 function refresh(){ renderMenu(); renderCartBar(); }
 
@@ -557,7 +564,7 @@ document.addEventListener("click", function(e){
   var t;
   if ((t = e.target.closest("[data-add]"))) { e.stopPropagation(); addToCart(t.dataset.add, 1); refresh(); if (layerKind === "cart") openCart(); return; }
   if ((t = e.target.closest("[data-minus]"))) { e.stopPropagation(); minusOne(t.dataset.minus); refresh(); return; }
-  if ((t = e.target.closest("[data-toggle]"))) { S.cartOpen = !S.cartOpen; renderCartBar(); return; }
+  if ((t = e.target.closest("[data-marina]"))) { openChat(); return; }
   if ((t = e.target.closest("[data-cart]"))) { openCart(); return; }
   if ((t = e.target.closest("[data-reset]"))) { S.q = ""; S.veg = false; S.exclude = []; $("q").value = ""; renderMenu(); return; }
   if ((t = e.target.closest("[data-open]")) && !$("chat").contains(t)) { openDish(t.dataset.open); return; }
@@ -600,7 +607,7 @@ function openDish(id){
 $("openInfo").onclick = function(){
   var r = R;
   var body = '<p style="margin:0 0 14px;color:var(--ink-2)">' + esc(r.description) + "</p>" +
-    '<dl class="kv"><dt>Indirizzo</dt><dd>' + esc(r.address) + ", " + esc(r.postal_code) + " " + esc(r.city) + " (" + esc(r.province) + ')</dd><dt>Telefono</dt><dd style="user-select:all">' + esc(r.phone) + '</dd><dt>Email</dt><dd style="user-select:all">' + esc(r.email) + "</dd><dt>Sito</dt><dd>" + esc(r.website) + "</dd><dt>Coperti</dt><dd>" + (r.seats ? r.seats + " · " : "") + r.tables_count + " tavoli</dd>" + (r.latitude ? "<dt>Posizione</dt><dd class=\"tn\">" + r.latitude + ", " + r.longitude + (r.demo ? " (appross.)" : "") + "</dd>" : "") + "</dl>" +
+    '<dl class="kv"><dt>Indirizzo</dt><dd>' + esc(r.address) + ", " + esc(r.postal_code) + " " + esc(r.city) + " (" + esc(r.province) + ')</dd><dt>Telefono</dt><dd style="user-select:all">' + esc(r.phone) + '</dd><dt>Email</dt><dd style="user-select:all">' + esc(r.email) + "</dd><dt>Sito</dt><dd>" + esc(r.website) + "</dd><dt>Coperti</dt><dd>" + (r.seats ? r.seats + " · " : "") + r.tables_count + " tavoli</dd>" + "<dt>Mappa</dt><dd><a href=\"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([r.name, r.address, r.postal_code, r.city].join(" ")) + "\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--coral-700);font-weight:700\">Apri in Google Maps ›</a></dd>" + "</dl>" +
     '<span class="lbl">Orari</span><ul class="hours">' + r.opening_hours.map(function(h){ return "<li><b>" + esc(h.day) + '</b><span class="tn" style="color:' + (h.hours === "Chiuso" ? "#b42318" : "var(--ink-2)") + '">' + esc(h.hours) + "</span></li>"; }).join("") + "</ul>" +
     '<p style="font-size:13px;color:var(--muted);margin:8px 0 0">Chiusura: ' + esc(r.closing_days) + "</p>" +
     '<span class="lbl">Servizi</span><div class="svc">' + r.services.map(function(s){ return "<span>" + esc(s) + "</span>"; }).join("") + "</div>" +
@@ -683,7 +690,7 @@ function openCart(){
     var p = BY[l.id];
     return '<div class="line"><div class="line-t"><img src="' + img(l.id) + '" alt=""><div class="nm"><b>' + esc(p.name) + '</b><small class="tn">' + euro(p.price) + ' cad.</small></div><b class="tn">' + euro(p.price * l.qty) + '</b></div><div class="line-b"><button class="notebtn" data-lnote="' + l.key + '">' + (l.note ? "✎ " + esc(l.note) : "+ Nota su questo piatto") + '</button><div class="stepper"><button data-lm="' + l.key + '" aria-label="Diminuisci">−</button><b class="tn">' + l.qty + '</b><button data-lp="' + l.key + '" aria-label="Aumenta">+</button></div></div></div>';
   }).join("") : '<p class="empty">Il carrello è vuoto.</p>';
-  openSheet("cart", { t: "Il tuo ordine", s: TABLE ? "Tavolo " + TABLE : R.takeaway_on ? "Al tavolo o da asporto" : "Menu digitale" }, body,
+  openSheet("cart", { t: "Il tuo ordine", s: TABLE ? "Tavolo " + TABLE : R.takeaway_on ? "Da asporto · ritiro al locale" : "Menu digitale" }, body,
     '<div class="r-tot" style="border:0;margin:0 0 12px;padding:0"><b>Totale</b><b class="tn">' + euro(total()) + '</b></div><button class="btn sea full" data-review="1"' + (S.cart.length ? "" : " disabled") + ">Continua al riepilogo</button>");
   var sh = layer.querySelector(".sheet");
   sh.addEventListener("click", function(e){
@@ -735,9 +742,9 @@ function closedToday(){
 }
 var PICK = store("cv-pickup") || {};
 function openReview(){
-  // dal QR del tavolo: ordine al tavolo. Dal sito (senza tavolo): il cliente sceglie asporto o tavolo
-  var canTo = !!R.takeaway_on && !TABLE, canTable = true;
-  var mode = TABLE ? "tavolo" : (canTo && S.mode !== "tavolo" ? "asporto" : "tavolo");
+  // ordine al tavolo SOLO dal QR del tavolo (il numero arriva dal QR); dal sito solo asporto
+  var canTo = !!R.takeaway_on && !TABLE, canTable = !!TABLE;
+  var mode = TABLE ? "tavolo" : canTo ? "asporto" : "nessuno";
   var pinfo = canTo ? pickupInfo() : { slots: [] }, slots = pinfo.slots;
   var modeSel = canTo && canTable ? '<div class="mode" role="group" aria-label="Come vuoi ricevere l\'ordine"><button type="button" data-mode="tavolo" aria-pressed="' + (mode === "tavolo") + '">🍽 Al tavolo</button><button type="button" data-mode="asporto" aria-pressed="' + (mode === "asporto") + '">🛍 Da asporto</button></div>' : "";
   var tableSel = TABLE ? "" : '<div class="tablepick" id="tBox"><label for="tPick">Numero del tavolo</label><select id="tPick"><option value="">—</option>' + Array.from({ length: R.tables_count }, function(_, i){ return "<option>" + (i + 1) + "</option>"; }).join("") + "</select></div>";
@@ -751,6 +758,7 @@ function openReview(){
   var body = '<div class="receipt"><div class="receipt-h"><b>' + esc(R.name.toUpperCase()) + '</b><span id="rvTable"></span></div><div class="receipt-b"><span class="lbl" style="margin-top:0">Il tuo ordine</span>' +
     S.cart.map(function(l){ var p = BY[l.id]; return '<div class="r"><span><b class="tn">' + l.qty + " ×</b> " + esc(p.name) + '</span><span class="tn">' + euro(p.price * l.qty) + "</span></div>" + (l.note ? '<p class="r-n">“' + esc(l.note) + "”</p>" : ""); }).join("") +
     '<div class="r-tot"><b>TOTALE</b><b class="tn">' + euro(total()) + "</b></div></div></div>" + modeSel + (canTable ? tableSel : "") + toBox +
+    (!canTable && !canTo ? '<p class="notice" id="qrOnly">Per ordinare al tavolo inquadra il <b>QR Code</b> che trovi sul tuo tavolo.</p>' : "") +
     '<label class="lbl" for="kNote">Note per la cucina</label><textarea class="in" id="kNote" rows="3" maxlength="300" placeholder="Es. senza aglio, poca cottura, allergie...">' + esc(S.note) + "</textarea>";
   openSheet("review", { t: "Riepilogo", s: "Controlla prima di confermare" }, body, '<button class="btn coral full" id="confirmBtn">Conferma ordine · ' + euro(total()) + '</button><button class="btn ghost full" style="margin-top:8px" data-cart="1">Modifica</button>');
   $("kNote").oninput = function(e){ S.note = e.target.value; persist(); };
@@ -758,8 +766,9 @@ function openReview(){
   function show(){
     if ($("tBox")) $("tBox").hidden = mode !== "tavolo";
     if ($("toBox")) $("toBox").hidden = mode !== "asporto";
-    $("rvTable").textContent = mode === "asporto" ? "ASPORTO" : "TAVOLO " + (TABLE || (tp && tp.value) || "—");
-    btn.disabled = mode === "asporto" && !slots.length;
+    $("rvTable").textContent = mode === "asporto" ? "ASPORTO" : TABLE ? "TAVOLO " + TABLE : "";
+    $("rvTable").hidden = !$("rvTable").textContent;
+    btn.disabled = (mode === "asporto" && !slots.length) || (!canTable && !canTo);
   }
   show();
   layer.querySelectorAll("[data-mode]").forEach(function(b){ b.onclick = function(){ mode = S.mode = b.dataset.mode; layer.querySelectorAll("[data-mode]").forEach(function(x){ x.setAttribute("aria-pressed", x === b); }); show(); }; });
