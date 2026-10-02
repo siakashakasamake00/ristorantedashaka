@@ -229,6 +229,7 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
         <button role="tab" data-tab="stats" aria-selected="false">Statistiche</button>
         <button role="tab" data-tab="orders" aria-selected="false">Ordini</button>
         <button role="tab" data-tab="info" aria-selected="false">Locale</button>
+        <button role="tab" data-tab="reviews" aria-selected="false">Recensioni</button>
         <button role="tab" data-tab="links" aria-selected="false">QR e cucina</button>
       </nav>
     </div>
@@ -272,6 +273,11 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
     </section>
 
     <!-- LINK -->
+    <section data-panel="reviews" hidden>
+      <div class="periods" id="periods3"></div>
+      <div id="revBox"><p class="empty">Caricamento…</p></div>
+    </section>
+
     <section data-panel="links" hidden>
       <div class="grid2">
         <div class="card"><h2>QR Code tavoli</h2><p class="sub">Stampa i QR o scarica il cartoncino di ogni tavolo.</p><a class="btn dark" href="tavoli.html">Apri QR Code</a></div>
@@ -405,6 +411,7 @@ document.querySelector("nav.tabs").addEventListener("click", function(e){
   document.querySelectorAll("[data-panel]").forEach(function(p){ p.hidden = p.dataset.panel !== b.dataset.tab; });
   if (b.dataset.tab === "stats") loadStats();
   if (b.dataset.tab === "orders") loadOrders();
+  if (b.dataset.tab === "reviews") loadReviews();
   window.scrollTo(0, 0);
 });
 
@@ -568,7 +575,7 @@ function shift(n){ return isoDay(new Date(Date.now() + n * 86400000)); }
 var PER = { key: "oggi", dal: shift(0), al: shift(0) };
 var PRESETS = [["oggi", "Oggi", 0, 0], ["ieri", "Ieri", -1, -1], ["7", "Ultimi 7 giorni", -6, 0], ["30", "Ultimi 30 giorni", -29, 0]];
 function renderPeriods(){
-  ["periods1", "periods2"].forEach(function(id){
+  ["periods1", "periods2", "periods3"].forEach(function(id){
     $(id).innerHTML = PRESETS.map(function(p){ return '<button data-p="' + p[0] + '" aria-pressed="' + (PER.key === p[0]) + '">' + p[1] + "</button>"; }).join("") +
       '<span style="display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)">dal <input type="date" data-d="dal" value="' + PER.dal + '"> al <input type="date" data-d="al" value="' + PER.al + '"></span>';
   });
@@ -579,9 +586,11 @@ function onPeriod(e){
   else if (e.type === "change" && e.target.dataset.d) { PER[e.target.dataset.d] = e.target.value; PER.key = ""; if (PER.dal > PER.al) { var t = PER.dal; PER.dal = PER.al; PER.al = t; } }
   else return;
   renderPeriods(); STATS = null; ORDERS = null;
-  if (!document.querySelector('[data-panel="stats"]').hidden) loadStats(); else loadOrders();
+  if (!document.querySelector('[data-panel="stats"]').hidden) loadStats();
+  else if (!document.querySelector('[data-panel="reviews"]').hidden) loadReviews();
+  else loadOrders();
 }
-["periods1", "periods2"].forEach(function(id){ $(id).addEventListener("click", onPeriod); $(id).addEventListener("change", onPeriod); });
+["periods1", "periods2", "periods3"].forEach(function(id){ $(id).addEventListener("click", onPeriod); $(id).addEventListener("change", onPeriod); });
 renderPeriods();
 function perLabel(){ return PER.dal === PER.al ? new Date(PER.dal + "T12:00:00").toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" }) : "dal " + new Date(PER.dal + "T12:00:00").toLocaleDateString("it-IT") + " al " + new Date(PER.al + "T12:00:00").toLocaleDateString("it-IT"); }
 
@@ -686,6 +695,30 @@ $("csvBtn").onclick = function(){
   a.download = "ordini-" + PER.dal + (PER.al !== PER.dal ? "_" + PER.al : "") + ".csv"; a.click();
 };
 
+// ---------- RECENSIONI ----------
+function starTxt(n){ return "★★★★★".slice(0, n) + "☆☆☆☆☆".slice(0, 5 - n); }
+async function loadReviews(){
+  $("revBox").innerHTML = '<p class="empty">Caricamento…</p>';
+  try {
+    var r = await api("/api/recensioni?dal=" + PER.dal + "&al=" + PER.al);
+    var html = '<p class="sub" style="text-transform:capitalize">' + esc(perLabel()) + "</p>";
+    var g = M && M.restaurant.google_review_url;
+    html += '<div class="kpis"><div class="kpi"><small>Voto medio</small><b class="tn">' + (r.avg == null ? "—" : r.avg.toFixed(1).replace(".", ",") + ' <span style="color:#f5b400;font-size:22px">★</span>') + "</b><span>su 5</span></div>" +
+      '<div class="kpi"><small>Voti ricevuti</small><b class="tn">' + r.count + "</b><span>dai clienti dopo il servizio</span></div>" +
+      '<div class="kpi"><small>Recensioni Google</small><b style="font-size:16px;margin-top:8px">' + (g ? '<a href="' + esc(g) + '" target="_blank" rel="noopener" style="color:var(--coral-700)">Link attivo ›</a>' : '<span style="color:var(--red)">Link non impostato</span>') + "</b><span>" + (g ? "i clienti lo vedono dopo il voto" : "aggiungilo in Locale") + "</span></div></div>";
+    if (!r.count) { $("revBox").innerHTML = html + '<p class="empty">Nessun voto in questo periodo. I clienti possono votare quando il loro ordine è segnato come servito.</p>'; return; }
+    var max = Math.max.apply(null, r.dist) || 1;
+    html += '<div class="charts"><div class="card chart"><h3>Distribuzione dei voti</h3><p>Quante volte è stato dato ogni voto</p><div class="hbars">' +
+      [5, 4, 3, 2, 1].map(function(n){ var v = r.dist[n - 1]; return '<div class="hr" data-tip="' + n + (n === 1 ? " stella" : " stelle") + " · " + v + ' voti"><span class="l" style="color:#c48b00;letter-spacing:.05em">' + starTxt(n) + '</span><span class="t"><i style="width:' + (v / max * 100) + '%"></i></span><span class="v tn">' + v + "</span></div>"; }).join("") + "</div></div>";
+    var com = r.reviews.filter(function(x){ return x.comment; });
+    html += '<div class="card chart"><h3>Commenti</h3><p>' + com.length + " commenti scritti</p>" + (com.length ? '<div style="display:grid;gap:10px">' + com.slice(0, 100).map(function(x){
+      var d = new Date(x.createdAt);
+      return '<div style="border-top:1px solid var(--line);padding-top:10px"><div style="display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted)"><span style="color:#c48b00;font-size:15px">' + starTxt(x.stars) + "</span><span>" + d.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" }) + " " + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) + " · #" + esc(x.code) + " · " + (x.type === "asporto" ? "Asporto" : "Tavolo " + x.table) + '</span></div><p style="margin:4px 0 0;color:var(--ink);font-size:14.5px">' + esc(x.comment) + "</p></div>";
+    }).join("") + "</div>" : '<p class="empty" style="padding:16px 0">Nessun commento scritto.</p>') + "</div></div>";
+    $("revBox").innerHTML = html;
+  } catch (e) { $("revBox").innerHTML = '<p class="empty">Errore: ' + esc(e.message) + "</p>"; }
+}
+
 // ---------- LOCALE ----------
 function renderInfo(){
   var R = M.restaurant, H = {};
@@ -696,7 +729,7 @@ function renderInfo(){
     '<div class="card"><h2>Il locale</h2><p class="sub">Queste informazioni compaiono nel menu e Marina le usa per rispondere ai clienti.</p><div class="form">' +
     '<div class="grid2">' + f("name", "Nome", R.name, 'maxlength="60" required') + f("tagline", "Sottotitolo", R.tagline, 'maxlength="80"') + "</div>" +
     '<div class="grid2">' + f("address", "Indirizzo", R.address, 'maxlength="120"') + f("postal_code", "CAP", R.postal_code, 'maxlength="10"') + f("city", "Città", R.city, 'maxlength="60"') + f("province", "Provincia", R.province, 'maxlength="4"') + "</div>" +
-    '<div class="grid2">' + f("phone", "Telefono", R.phone, 'maxlength="40" type="tel"') + f("email", "Email", R.email, 'maxlength="80" type="email"') + f("website", "Sito web", R.website, 'maxlength="120"') + f("whatsapp", "WhatsApp per le prenotazioni", R.whatsapp, 'maxlength="30" type="tel" placeholder="Es. +39 333 1234567"', "Se vuoto si usa il telefono") + "</div>" +
+    '<div class="grid2">' + f("phone", "Telefono", R.phone, 'maxlength="40" type="tel"') + f("email", "Email", R.email, 'maxlength="80" type="email"') + f("website", "Sito web", R.website, 'maxlength="120"') + f("google_review_url", "Link per le recensioni Google", R.google_review_url, 'maxlength="300" type="url" placeholder="https://g.page/r/…/review"', "Google Business Profile → Chiedi recensioni → copia il link") + f("whatsapp", "WhatsApp per le prenotazioni", R.whatsapp, 'maxlength="30" type="tel" placeholder="Es. +39 333 1234567"', "Se vuoto si usa il telefono") + "</div>" +
     ta("description", "Descrizione", R.description) + "</div></div>" +
     '<div class="card"><h2>Immagini</h2><p class="sub">La foto di copertina va in alto nel menu, dietro al nome. Il logo va accanto al nome. Si salvano subito.</p><div class="media">' +
     mediaBox("COPERTINA", "Foto di copertina", R.hero, "Foto orizzontale del locale o di un piatto") +
@@ -786,7 +819,7 @@ function collectCats(){ document.querySelectorAll("#catList .crow").forEach(func
 $("infoForm").addEventListener("submit", function(e){
   e.preventDefault();
   var R = M.restaurant, v = function(id){ return $("i_" + id).value.trim(); };
-  ["name", "tagline", "address", "postal_code", "city", "province", "phone", "whatsapp", "email", "website", "description", "closing_days", "info"].forEach(function(k){ R[k] = v(k); });
+  ["name", "tagline", "address", "postal_code", "city", "province", "phone", "whatsapp", "email", "website", "google_review_url", "description", "closing_days", "info"].forEach(function(k){ R[k] = v(k); });
   R.services = v("services").split("\n").map(function(s){ return s.trim(); }).filter(Boolean);
   R.opening_hours = DAYS.map(function(d, i){ return { day: d, hours: $("h_" + i).value.trim() }; });
   R.tables_count = Math.max(1, Math.min(200, parseInt(v("tables_count"), 10) || 1));
