@@ -17,6 +17,7 @@ function validate(input) {
     order_prefix: (str(R.order_prefix, 4).toUpperCase().replace(/[^A-Z]/g, "") || "ORD"),
     address: str(R.address, 120), postal_code: str(R.postal_code, 10), city: str(R.city, 60),
     province: str(R.province, 4), region: str(R.region, 40), country: str(R.country, 40),
+    google_review_url: /^https:\/\/[^\s"'<>]+$/.test(String(R.google_review_url || "").trim()) ? str(R.google_review_url, 300) : "",
     phone: str(R.phone, 40), whatsapp: str(R.whatsapp, 30), email: str(R.email, 80), website: str(R.website, 120),
     description: str(R.description, 1200), closing_days: str(R.closing_days, 300), info: str(R.info, 800),
     seats: Math.max(0, Math.min(2000, parseInt(R.seats, 10) || 0)),
