@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%23062536%22/%3E%3Ctext%20x%3D%2232%22%20y%3D%2244%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2236%22%20font-weight%3D%22700%22%20fill%3D%22%23fff%22%20text-anchor%3D%22middle%22%3ED%3C/text%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#062536">
@@ -37,20 +38,115 @@ input,textarea,select{font:inherit;color:inherit}
 .gate input:focus{border-color:var(--sea-700);background:#fff;outline:none}
 .gate .err{color:var(--red);font-weight:700;min-height:1.4em;margin:10px 0 0}
 
-/* intestazione */
-header{position:sticky;top:0;z-index:20;background:var(--sea-950);color:#fff}
-.hin{max-width:1100px;margin:0 auto;padding:10px 16px 0}
-.hrow{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+/* struttura: barra laterale + area principale */
+.side{background:var(--sea-950);color:#fff;position:sticky;top:0;z-index:25}
+.side .brand{display:none}
 .brand small{display:block;font-size:10px;font-weight:800;letter-spacing:.18em;color:var(--sea-200)}
-.brand b{font-family:var(--display);font-size:21px;letter-spacing:.06em}
-.hacts{margin-left:auto;display:flex;gap:8px;align-items:center}
-.hb{height:36px;padding:0 12px;border-radius:10px;background:rgba(255,255,255,.12);font-size:12.5px;font-weight:700;color:#fff;text-decoration:none;display:inline-flex;align-items:center}
-.save{font-size:12px;font-weight:700;color:var(--sea-200);white-space:nowrap}
-.save.err{color:var(--coral-200)}
-nav.tabs{display:flex;gap:4px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
-nav.tabs button{padding:10px 14px;font-size:14px;font-weight:700;color:var(--sea-200);border-bottom:3px solid transparent;white-space:nowrap}
+.brand b{display:block;font-family:var(--display);font-size:21px;letter-spacing:.06em;line-height:1.15;margin-top:3px}
+a.btn{text-decoration:none}
+.side nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:6px 8px 0;margin:0}
+.side nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:14px;font-weight:700;color:var(--sea-200);border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs button svg{width:18px;height:18px;flex-shrink:0}
 nav.tabs button[aria-selected="true"]{color:#fff;border-bottom-color:var(--coral)}
-main{max-width:1100px;margin:0 auto;padding:18px 16px 80px}
+.top{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-bottom:1px solid var(--line)}
+.hello{min-width:0}
+.hello b{display:block;font-size:19px;font-weight:800;line-height:1.2}
+.hello small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.tacts{margin-left:auto;display:flex;gap:8px;align-items:center}
+.ibtn{position:relative;width:42px;height:42px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--ink-2)}
+.ibtn svg{width:20px;height:20px}
+.ibtn .dot{position:absolute;top:4px;right:4px;min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--coral);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;border:2px solid #fff}
+.vbtn{height:42px;padding:0 14px;border-radius:12px;background:var(--sea-900);color:#fff;font-weight:700;font-size:13.5px;display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+.ava{width:42px;height:42px;border-radius:99px;background:var(--coral);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center;letter-spacing:.02em}
+.notif{position:absolute;right:16px;top:64px;z-index:40;width:min(360px,calc(100vw - 32px));background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 50px -18px rgba(6,37,54,.35);padding:8px}
+.notif h3{margin:6px 8px 8px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.notif button{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:10px;border-radius:12px}
+.notif button:hover{background:var(--soft)}
+.notif .nd{width:9px;height:9px;border-radius:99px;margin-top:6px;flex-shrink:0;background:var(--sea-200)}
+.notif .nd.red{background:var(--coral)}.notif .nd.green{background:var(--green)}.notif .nd.blue{background:#0284c7}
+.notif p{margin:0;font-size:14px;font-weight:600}
+.notif .none{padding:14px 10px;color:var(--muted);font-size:14px}
+.save{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.save.err{color:var(--red)}
+main{max-width:1200px;margin:0 auto;padding:18px 16px 80px}
+@media (max-width:640px){ .vbtn{display:none} .hello b{font-size:17px} .save{font-size:11px;white-space:normal;max-width:70px;text-align:right;line-height:1.2} }
+@media (min-width:960px){
+  .shell{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh}
+  .side{height:100vh;display:flex;flex-direction:column;padding:20px 12px}
+  .side .brand{display:block;padding:2px 12px 20px}
+  .side nav.tabs{flex-direction:column;overflow:visible;padding:0;flex:1;gap:2px}
+  nav.tabs button{width:100%;border-radius:12px;border-bottom:0;padding:11px 12px}
+  nav.tabs button[aria-selected="true"]{background:rgba(255,255,255,.1);box-shadow:inset 3px 0 0 var(--coral)}
+  nav.tabs button:hover{color:#fff}
+  nav.tabs button.prof{margin-top:auto}
+  .top{position:sticky;top:0;z-index:20;padding:16px 28px}
+  main{padding:24px 28px 80px;margin:0}
+}
+/* panoramica */
+.hfilter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.hfilter button{height:38px;padding:0 14px;border-radius:99px;background:#fff;border:1.5px solid var(--line);font-weight:700;font-size:13px}
+.hfilter button[aria-pressed="true"]{background:var(--sea-900);border-color:var(--sea-900);color:#fff}
+.kpi4{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:760px){ .kpi4{grid-template-columns:repeat(4,minmax(0,1fr))} }
+.kpi .live{display:inline-flex;align-items:center;gap:5px;color:var(--green);font-weight:700}
+.kpi .live:before{content:"";width:7px;height:7px;border-radius:99px;background:var(--green)}
+.qacts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.qact{height:44px;padding:0 16px;border-radius:12px;background:#fff;border:1px solid var(--line);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none}
+.qact:hover{border-color:var(--sea-200)}
+.qact svg{width:18px;height:18px;color:var(--coral-700)}
+.hgrid{display:grid;gap:14px}
+@media (min-width:900px){ .hgrid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.hc{display:flex;flex-direction:column;gap:10px;min-width:0}
+.hch{display:flex;align-items:center;gap:10px}
+.hch h2{margin:0;font-size:16px}
+.hch .lnk{margin-left:auto;font-size:13px;font-weight:700;color:var(--coral-700);padding:6px 4px}
+.olist{display:grid;gap:8px}
+.orow{display:grid;grid-template-columns:auto 1fr auto;gap:2px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:14px}
+.orow .oc{font-weight:800;font-size:14px}
+.orow .ow{font-size:13px;color:var(--ink-2);font-weight:600}
+.orow .ot{font-weight:800;text-align:right}
+.orow .oi{grid-column:1/3;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.orow .st{justify-self:end;width:auto;height:auto}
+.svc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.svc div{background:var(--soft);border-radius:14px;padding:12px}
+.svc b{display:block;font-size:26px;font-weight:800;line-height:1.1}
+.svc small{font-size:12.5px;color:var(--ink-2);font-weight:600}
+.svc .n b{color:#075985}.svc .p b{color:#92400e}.svc .r b{color:var(--green)}
+.hc .btn{align-self:flex-start}
+.ttop{width:100%;border-collapse:collapse;font-size:13.5px}
+.ttop th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:800;padding:0 6px 6px}
+.ttop td{padding:8px 6px;border-top:1px solid var(--line)}
+.ttop .r{text-align:right}
+.ttop .rk{width:28px;font-weight:800;color:var(--coral-700)}
+.ttop .pcat{color:var(--muted);font-size:12px;font-weight:600;margin-top:1px}
+.ttop th{background:none;position:static;padding:0 6px 6px}
+.alist{display:grid;gap:8px}
+.al{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:var(--soft)}
+.al .ad{width:10px;height:10px;border-radius:99px;margin-top:5px;flex-shrink:0;background:var(--green)}
+.al.amber .ad{background:#d97706}.al.red .ad{background:var(--red)}
+.al b{display:block;font-size:14px}
+.al span{display:block;font-size:13px;color:var(--ink-2)}
+.al button{margin-left:auto;flex-shrink:0;height:32px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid var(--line);font-size:12.5px;font-weight:700}
+/* tavoli */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tcard{text-align:left;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:4px;min-height:112px}
+.tcard .tn1{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tcard .tn2{font-size:26px;font-weight:800;line-height:1}
+.tcard .ts{font-size:12.5px;font-weight:800}
+.tcard .tx{font-size:12.5px;color:var(--muted)}
+.tcard.free .ts{color:var(--muted)}
+.tcard.new{border-color:#7dd3fc;box-shadow:0 0 0 3px #e0f2fe}.tcard.new .ts{color:#075985}
+.tcard.preparing{border-color:#fcd34d;box-shadow:0 0 0 3px #fef3c7}.tcard.preparing .ts{color:#92400e}
+.tcard.ready{border-color:#86efac;box-shadow:0 0 0 3px var(--green-50)}.tcard.ready .ts{color:var(--green)}
+.tcard.served .ts{color:var(--ink-2)}
+.tleg{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.tleg i{display:inline-block;width:10px;height:10px;border-radius:99px;margin-right:5px;vertical-align:-1px}
+/* profilo */
+.pf{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.pf .ava{width:64px;height:64px;font-size:22px}
+.pf b{font-size:18px;display:block}
+.steps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px;color:var(--ink-2)}
 .banner{background:var(--amber-50);border:1px solid #fde2b3;color:var(--amber-ink);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .banner button{margin-left:auto}
 
@@ -174,6 +270,23 @@ td.r,th.r{text-align:right}
 .st{display:inline-block;font-size:11.5px;font-weight:800;border-radius:6px;padding:2px 7px;white-space:nowrap}
 .st.new{background:#e0f2fe;color:#075985}.st.preparing{background:#fef3c7;color:#92400e}.st.ready{background:var(--green-50);color:var(--green)}
 .st.served{background:var(--soft);color:var(--ink-2)}.st.cancelled{background:var(--red-50);color:var(--red)}
+.st.nuova{background:#e0f2fe;color:#075985}.st.confermata{background:var(--green-50);color:var(--green)}.st.rifiutata,.st.annullata{background:var(--red-50);color:var(--red)}.st.arrivata{background:var(--soft);color:var(--ink-2)}
+.tbadge{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:var(--coral);color:#fff;font-size:11px;font-weight:800;margin-left:4px;vertical-align:1px}
+.bday{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+.bk{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:grid;grid-template-columns:64px 1fr;gap:4px 12px;margin-bottom:8px}
+.bk.nuova{border-color:#7dd3fc;box-shadow:0 0 0 3px #e0f2fe}
+.bk.rifiutata,.bk.annullata{opacity:.6}
+.bk .tm{grid-row:span 3;font-size:22px;font-weight:800;line-height:1.1}
+.bk .tm small{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-top:4px}
+.bk .who{font-weight:800;font-size:15.5px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bk .meta{font-size:13px;color:var(--muted)}
+.bk .note{font-size:13.5px;background:var(--amber-50);color:var(--amber-ink);border-radius:8px;padding:4px 8px;margin-top:2px}
+.bk .acts{display:flex;flex-direction:row;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px;grid-column:1/-1}
+.bk a.btn{text-decoration:none;color:var(--ink)}
+.bk .who .st{align-self:center;width:auto;height:auto;font-size:11.5px}
+#bkPer .btn.pri{color:#fff}
+.bk .acts .btn{height:34px;font-size:12.5px;padding:0 11px;border-radius:10px}
+.btn.ok{background:var(--green);color:#fff}
 td .items{color:var(--ink-2);max-width:380px}
 td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
 
@@ -214,33 +327,77 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
 </section>
 
 <div id="app" hidden>
-  <header>
-    <div class="hin">
-      <div class="hrow">
-        <div class="brand"><small>PANNELLO TITOLARE</small><b id="bName">DA SHAKA</b></div>
-        <div class="hacts">
-          <span class="save" id="saveState" aria-live="polite"></span>
-          <a class="hb" href="index.html" target="_blank" rel="noopener">Vedi menu</a>
-          <button class="hb" id="logout">Esci</button>
-        </div>
-      </div>
-      <nav class="tabs" role="tablist">
-        <button role="tab" data-tab="menu" aria-selected="true">Menu</button>
-        <button role="tab" data-tab="stats" aria-selected="false">Statistiche</button>
-        <button role="tab" data-tab="orders" aria-selected="false">Ordini</button>
-        <button role="tab" data-tab="info" aria-selected="false">Locale</button>
-        <button role="tab" data-tab="visits" aria-selected="false">Visite</button>
-        <button role="tab" data-tab="reviews" aria-selected="false">Recensioni</button>
-        <button role="tab" data-tab="links" aria-selected="false">QR e cucina</button>
-      </nav>
+<div class="shell">
+  <aside class="side">
+    <div class="brand"><small>PANNELLO TITOLARE</small><b id="bName">DA SHAKA</b></div>
+    <nav class="tabs" role="tablist" aria-label="Sezioni del pannello">
+        <button role="tab" data-tab="home" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Panoramica</span></button>
+        <button role="tab" data-tab="orders" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg><span>Ordini</span></button>
+        <button role="tab" data-tab="menu" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 7h6"/></svg><span>Menu</span></button>
+        <button role="tab" data-tab="tables" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M6 12v8M18 12v8"/></svg><span>Tavoli</span></button>
+        <button role="tab" data-tab="book" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Prenotazioni</span> <span class="tbadge" id="bookBadge" hidden></span></button>
+        <button role="tab" data-tab="stats" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Statistiche</span></button>
+        <button role="tab" data-tab="reviews" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Recensioni</span></button>
+        <button role="tab" data-tab="visits" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>Visite</span></button>
+        <button role="tab" data-tab="info" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M3 9h18"/><path d="M10 20v-6h4v6"/></svg><span>Il locale</span></button>
+        <button role="tab" data-tab="links" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg><span>QR e cucina</span></button>
+        <button role="tab" class="prof" data-tab="profile" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>Profilo amministratore</span></button>
+    </nav>
+  </aside>
+  <div class="mainwrap">
+  <header class="top">
+    <div class="hello"><b id="hello">Buongiorno</b><small id="secTitle">Panoramica del locale</small></div>
+    <div class="tacts">
+      <span class="save" id="saveState" aria-live="polite"></span>
+      <button class="ibtn" id="bell" aria-label="Notifiche" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg><span class="dot" id="bellDot" hidden></span></button>
+      <a class="vbtn" href="index.html" target="_blank" rel="noopener">Vedi menu</a>
+      <button class="ava" id="avaBtn" aria-label="Profilo amministratore"></button>
     </div>
+    <div class="notif" id="notif" hidden></div>
   </header>
 
   <main>
     <div class="banner" id="conflict" hidden><span>Il menu è stato modificato da un altro telefono o computer. Ricarica per vedere la versione più recente (l'ultima modifica fatta qui non è stata salvata).</span><button class="btn dark" id="reload">Ricarica</button></div>
 
+    <!-- PANORAMICA -->
+    <section data-panel="home">
+      <div class="hfilter" id="homePer"><button data-hp="oggi" aria-pressed="true">Oggi, <span id="todayLbl"></span></button><button data-hp="30" aria-pressed="false">Ultimi 30 giorni</button></div>
+      <div class="kpis kpi4" id="homeKpi"></div>
+      <div class="qacts">
+        <button class="qact" id="qaDish"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nuovo piatto</button>
+        <button class="qact" data-go="book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Prenotazioni <span class="tbadge" id="qaBook" hidden></span></button>
+        <a class="qact" href="tavoli.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>Gestisci QR</a>
+      </div>
+      <div class="hgrid">
+        <div class="card hc"><div class="hch"><h2>Ordini da gestire</h2><button class="lnk" data-go="orders">Vedi tutti ›</button></div><div id="hOrders"><p class="empty">Caricamento…</p></div></div>
+        <div class="card hc"><div class="hch"><h2>Stato del servizio</h2></div><div id="hService"></div><a class="btn dark" href="cucina.html">Apri dashboard cucina</a></div>
+        <div class="card hc"><div class="hch"><h2>Piatti più venduti</h2><button class="lnk" data-go="stats">Statistiche ›</button></div><div id="hTop"></div></div>
+        <div class="card hc"><div class="hch"><h2>Richiede attenzione</h2></div><div id="hAlert"></div></div>
+      </div>
+    </section>
+
+    <!-- TAVOLI -->
+    <section data-panel="tables" hidden>
+      <p class="tleg"><span><i style="background:#cbd5e1"></i>Libero</span><span><i style="background:#0284c7"></i>Ordine nuovo</span><span><i style="background:#d97706"></i>In preparazione</span><span><i style="background:var(--green)"></i>Pronto da servire</span><span><i style="background:var(--ink-2)"></i>Servito</span></p>
+      <p class="sub" id="tabSub"></p>
+      <div class="tgrid" id="tabGrid"><p class="empty">Caricamento…</p></div>
+    </section>
+
+    <!-- PROFILO -->
+    <section data-panel="profile" hidden>
+      <div class="grid2">
+        <div class="card"><div class="pf"><span class="ava" id="pfAva"></span><div><b id="pfName"></b><span class="sub" style="margin:0">Titolare · accesso con PIN</span></div></div>
+          <p class="sub">Sei collegato da questo dispositivo. Le visite che fai al menu da qui non vengono contate nelle statistiche.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn danger" id="logout">Esci da questo dispositivo</button><a class="btn ghost" href="index.html" target="_blank" rel="noopener">Vedi menu</a></div></div>
+        <div class="card"><h2>Cambiare il PIN</h2><p class="sub">Per sicurezza il PIN non si cambia da qui, ma su Netlify:</p>
+          <ol class="steps"><li>Apri il progetto su Netlify</li><li>Project configuration → Environment variables</li><li>Modifica <b>ADMIN_PIN</b> (pannello) o <b>KITCHEN_PIN</b> (cucina)</li><li>Deploys → Trigger deploy</li></ol></div>
+        <div class="card"><h2>Link utili</h2><p class="sub">Da salvare tra i preferiti del telefono.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn ghost" href="cucina.html">Dashboard cucina</a><a class="btn ghost" href="tavoli.html">QR dei tavoli</a><a class="btn ghost" href="index.html?tavolo=1" target="_blank" rel="noopener">Menu dal tavolo 1</a></div></div>
+      </div>
+    </section>
+
     <!-- MENU -->
-    <section data-panel="menu">
+    <section data-panel="menu" hidden>
       <div class="tool">
         <input class="search" id="q" type="search" placeholder="Cerca un piatto…" aria-label="Cerca un piatto">
         <select id="fCat" aria-label="Categoria"></select>
@@ -268,6 +425,27 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
       <div id="ordersBox"><p class="empty">Caricamento…</p></div>
     </section>
 
+    <!-- PRENOTAZIONI -->
+    <section data-panel="book" hidden>
+      <div class="periods" id="bkPer">
+        <button data-b="oggi" aria-pressed="true">Oggi</button><button data-b="domani" aria-pressed="false">Domani</button><button data-b="7" aria-pressed="false">Prossimi 7 giorni</button><button data-b="30" aria-pressed="false">Prossimi 30 giorni</button><button data-b="passate" aria-pressed="false">Passate (30 giorni)</button>
+        <button class="btn pri" id="bkAdd" style="border-radius:99px;margin-left:auto">+ Nuova prenotazione</button>
+      </div>
+      <form class="card" id="bkForm" hidden style="margin-bottom:14px">
+        <h2>Nuova prenotazione</h2><p class="sub">Per le prenotazioni arrivate per telefono o di persona: viene salvata già confermata.</p>
+        <div class="grid2">
+          <label class="field">Giorno<input type="date" id="bk_day" required></label>
+          <label class="field">Ora<input type="time" id="bk_time" step="900" required></label>
+          <label class="field">Persone<input type="number" id="bk_ppl" min="1" max="99" value="2" required></label>
+          <label class="field">Nome<input id="bk_name" maxlength="60" required></label>
+          <label class="field">Telefono<input id="bk_phone" type="tel" maxlength="25"></label>
+          <label class="field">Nota<input id="bk_note" maxlength="200" placeholder="Seggiolone, tavolo fuori…"></label>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="btn pri" type="submit">Salva prenotazione</button><button class="btn ghost" type="button" id="bkCancel">Annulla</button></div>
+      </form>
+      <div id="bookBox"><p class="empty">Caricamento…</p></div>
+    </section>
+
     <!-- LOCALE -->
     <section data-panel="info" hidden>
       <form class="form" id="infoForm"></form>
@@ -292,6 +470,8 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
       </div>
     </section>
   </main>
+  </div>
+</div>
 </div>
 
 <dialog id="dlg"><form class="dlg" id="edForm" method="dialog">
@@ -371,6 +551,7 @@ async function start(){
   $("gate").hidden = true; $("app").hidden = false;
   await loadMenu();
   loadImgs();
+  showTab("home");
 }
 
 async function loadMenu(){
@@ -411,16 +592,164 @@ $("reload").onclick = loadMenu;
 window.addEventListener("beforeunload", function(e){ if (saveTimer && ($("saveState").textContent.indexOf("salvare") > -1 || saving)) { e.preventDefault(); e.returnValue = ""; } });
 
 // ---------- schede ----------
-document.querySelector("nav.tabs").addEventListener("click", function(e){
-  var b = e.target.closest("button[data-tab]"); if (!b) return;
-  document.querySelectorAll("nav.tabs button").forEach(function(x){ x.setAttribute("aria-selected", x === b ? "true" : "false"); });
-  document.querySelectorAll("[data-panel]").forEach(function(p){ p.hidden = p.dataset.panel !== b.dataset.tab; });
-  if (b.dataset.tab === "stats") loadStats();
-  if (b.dataset.tab === "orders") loadOrders();
-  if (b.dataset.tab === "reviews") loadReviews();
-  if (b.dataset.tab === "visits") loadVisits();
+var TITLES = { home: "Panoramica del locale", orders: "Ordini", menu: "Menu e piatti", tables: "Tavoli in sala", book: "Prenotazioni", stats: "Statistiche", reviews: "Recensioni dei clienti", visits: "Visite al menu", info: "Informazioni del locale", links: "QR Code e cucina", profile: "Profilo amministratore" };
+var CUR = "home";
+function showTab(name){
+  CUR = name;
+  document.querySelectorAll("nav.tabs button").forEach(function(x){ x.setAttribute("aria-selected", x.dataset.tab === name ? "true" : "false"); });
+  document.querySelectorAll("[data-panel]").forEach(function(p){ p.hidden = p.dataset.panel !== name; });
+  $("secTitle").textContent = TITLES[name] || "";
+  $("notif").hidden = true; $("bell").setAttribute("aria-expanded", "false");
+  var nb = document.querySelector('nav.tabs button[data-tab="' + name + '"]'); if (nb && nb.scrollIntoView && window.innerWidth < 960) nb.scrollIntoView({ block: "nearest", inline: "center" });
+  if (name === "home") loadHome();
+  if (name === "tables") loadTables();
+  if (name === "stats") loadStats();
+  if (name === "orders") loadOrders();
+  if (name === "reviews") loadReviews();
+  if (name === "visits") loadVisits();
+  if (name === "book") loadBook();
   window.scrollTo(0, 0);
+}
+document.querySelector("nav.tabs").addEventListener("click", function(e){ var b = e.target.closest("button[data-tab]"); if (b) showTab(b.dataset.tab); });
+document.addEventListener("click", function(e){
+  var g = e.target.closest("[data-go]"); if (g) { e.preventDefault(); showTab(g.dataset.go); return; }
+  if (!e.target.closest("#notif") && !e.target.closest("#bell")) { $("notif").hidden = true; $("bell").setAttribute("aria-expanded", "false"); }
 });
+$("avaBtn").onclick = function(){ showTab("profile"); };
+function greetTxt(){ var h = new Date().getHours(); return (h < 13 ? "Buongiorno" : h < 18 ? "Buon pomeriggio" : "Buonasera") + ", " + (M ? M.restaurant.name : ""); }
+function initials(n){ var w = String(n || "").trim().split(/\s+/).filter(function(x){ return x.length > 1 || /\w/.test(x); }); return ((w[0] || "?")[0] + (w[1] ? w[1][0] : "")).toUpperCase(); }
+function paintHead(){
+  $("hello").textContent = greetTxt();
+  $("avaBtn").textContent = $("pfAva").textContent = initials(M.restaurant.name);
+  $("pfName").textContent = M.restaurant.name;
+  $("todayLbl").textContent = new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  var o = $("oTab"), v = o.value, n = Math.max(1, Math.min(200, parseInt(M.restaurant.tables_count, 10) || 20)), h = '<option value="">Tavoli e asporto</option><option value="asporto">Solo asporto</option>';
+  for (var i = 1; i <= n; i++) h += '<option value="' + i + '">Tavolo ' + i + "</option>";
+  o.innerHTML = h; o.value = v;
+}
+
+// ---------- dati "dal vivo": ordini di oggi, prenotazioni, recensioni ----------
+var LIVE = { orders: [], nuove: 0, revToday: 0, at: 0 };
+var OPEN = { new: 1, preparing: 1, ready: 1 };
+async function pulse(){
+  try {
+    var r = await Promise.all([api("/api/admin?azione=ordini&dal=" + shift(0) + "&al=" + shift(0)), api("/api/prenotazioni?conta=1").catch(function(){ return { nuove: 0 }; })]);
+    LIVE.orders = r[0].orders || []; LIVE.nuove = r[1].nuove || 0; LIVE.at = Date.now();
+    var b = $("bookBadge"); b.textContent = LIVE.nuove; b.hidden = !LIVE.nuove;
+    var q = $("qaBook"); q.textContent = LIVE.nuove; q.hidden = !LIVE.nuove;
+    renderNotif();
+    if (CUR === "home") { renderLiveHome(); }
+    if (CUR === "tables") renderTables();
+  } catch (e) {}
+}
+function activeTables(){
+  var now = Date.now(), set = {};
+  LIVE.orders.forEach(function(o){ if (o.type === "asporto" || o.status === "cancelled") return; if (OPEN[o.status] || now - Date.parse(o.createdAt) < 2 * 3600000) set[o.table] = 1; });
+  return Object.keys(set).length;
+}
+function renderNotif(){
+  var c = { new: 0, ready: 0 }, late = 0, now = Date.now();
+  LIVE.orders.forEach(function(o){ if (c[o.status] != null) c[o.status]++; if (o.status === "new" && now - Date.parse(o.createdAt) > 10 * 60000) late++; });
+  var items = [];
+  if (c.new) items.push(["blue", c.new === 1 ? "1 nuovo ordine da preparare" : c.new + " nuovi ordini da preparare", "orders"]);
+  if (late) items.push(["red", late === 1 ? "1 ordine aspetta da più di 10 minuti" : late + " ordini aspettano da più di 10 minuti", "orders"]);
+  if (c.ready) items.push(["green", c.ready === 1 ? "1 ordine pronto da servire" : c.ready + " ordini pronti da servire", "orders"]);
+  if (LIVE.nuove) items.push(["red", LIVE.nuove === 1 ? "1 prenotazione da confermare" : LIVE.nuove + " prenotazioni da confermare", "book"]);
+  if (LIVE.revToday) items.push(["", LIVE.revToday === 1 ? "1 nuova recensione oggi" : LIVE.revToday + " nuove recensioni oggi", "reviews"]);
+  var n = c.new + c.ready + LIVE.nuove + LIVE.revToday, d = $("bellDot"); d.textContent = n > 99 ? "99+" : n; d.hidden = !n;
+  $("notif").innerHTML = "<h3>Notifiche</h3>" + (items.length ? items.map(function(x){ return '<button data-go="' + x[2] + '"><span class="nd ' + x[0] + '"></span><p>' + esc(x[1]) + "</p></button>"; }).join("") : '<p class="none">Nessuna novità. Tutto sotto controllo.</p>');
+}
+$("bell").onclick = function(){ var n = $("notif"); n.hidden = !n.hidden; this.setAttribute("aria-expanded", n.hidden ? "false" : "true"); };
+
+// ---------- PANORAMICA ----------
+var HOME = { per: "oggi", stats: null, rev: null };
+$("homePer").addEventListener("click", function(e){ var b = e.target.closest("button[data-hp]"); if (!b) return; HOME.per = b.dataset.hp; document.querySelectorAll("#homePer button").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); }); loadHome(); });
+$("qaDish").onclick = function(){ showTab("menu"); openEdit(null); };
+async function loadHome(){
+  if (!M) return;
+  paintHead();
+  var dal = HOME.per === "oggi" ? shift(0) : shift(-29);
+  try {
+    var r = await Promise.all([api("/api/admin?azione=stats&dal=" + dal + "&al=" + shift(0)), api("/api/recensioni?dal=" + shift(-6) + "&al=" + shift(0)).catch(function(){ return null; }), pulse()]);
+    HOME.stats = r[0]; HOME.rev = r[1];
+    LIVE.revToday = HOME.rev ? HOME.rev.reviews.filter(function(x){ return isoDay(new Date(x.createdAt)) === shift(0); }).length : 0;
+    renderNotif(); renderHome();
+  } catch (e) { $("homeKpi").innerHTML = '<p class="empty">Errore: ' + esc(e.message) + "</p>"; }
+}
+function catOf(id){ var f = find(id); return f ? f.c.name : ""; }
+function renderHome(){
+  var s = HOME.stats, oggi = HOME.per === "oggi";
+  $("homeKpi").innerHTML =
+    '<div class="kpi"><small>Incasso ' + (oggi ? "oggi" : "30 giorni") + '</small><b class="tn">' + euro(s.revenue) + "</b><span>" + (s.takeaway.orders ? "di cui asporto " + euro(s.takeaway.revenue) : "annullati esclusi") + "</span></div>" +
+    '<div class="kpi"><small>Ordini</small><b class="tn">' + s.orders + "</b><span>" + s.itemsSold + " piatti" + (s.cancelled ? " · " + s.cancelled + " annullati" : "") + "</span></div>" +
+    '<div class="kpi"><small>Scontrino medio</small><b class="tn">' + (s.orders ? euro(s.avgTicket) : "—") + "</b><span>per ordine</span></div>" +
+    '<div class="kpi"><small>Tavoli attivi</small><b class="tn" id="kTab">' + activeTables() + '</b><span class="live">adesso</span></div>';
+  var top = s.topProducts.slice(0, 5);
+  $("hTop").innerHTML = top.length ? '<table class="ttop"><thead><tr><th>#</th><th>Piatto</th><th class="r">Venduti</th><th class="r">Incasso</th></tr></thead><tbody>' + top.map(function(p, i){
+    return '<tr><td class="rk">' + (i + 1) + "</td><td><b>" + esc(p.name) + '</b><div class="pcat">' + esc(catOf(p.id)) + '</div></td><td class="r tn">' + p.qty + '</td><td class="r tn">' + euro(p.revenue) + "</td></tr>";
+  }).join("") + "</tbody></table>" : '<p class="empty" style="padding:20px 0">Nessun piatto venduto ' + (oggi ? "oggi" : "negli ultimi 30 giorni") + ".</p>";
+  renderLiveHome();
+}
+function renderLiveHome(){
+  if (!HOME.stats) return;
+  var c = { new: 0, preparing: 0, ready: 0 };
+  var open = LIVE.orders.filter(function(o){ return OPEN[o.status]; });
+  open.forEach(function(o){ c[o.status]++; });
+  if ($("kTab")) $("kTab").textContent = activeTables();
+  open.sort(function(a, b){ var r = { new: 0, ready: 1, preparing: 2 }; return r[a.status] - r[b.status] || a.createdAt.localeCompare(b.createdAt); });
+  $("hOrders").innerHTML = open.length ? '<div class="olist">' + open.slice(0, 6).map(function(o){
+    return '<div class="orow"><span class="oc">#' + esc(o.code) + '</span><span class="ow">' + (o.type === "asporto" ? "Asporto" + (o.pickup ? " · ritiro " + esc(o.pickup.time) : "") : "Tavolo " + o.table) + " · " + new Date(o.createdAt).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) + '</span><span class="ot tn">' + euro(o.total) + '</span><span class="oi">' + o.items.map(function(i){ return i.qty + "× " + esc(i.name); }).join(", ") + '</span><span class="st ' + o.status + '">' + STATUS[o.status] + "</span></div>";
+  }).join("") + "</div>" + (open.length > 6 ? '<p class="sub" style="margin:0">e altri ' + (open.length - 6) + "…</p>" : "") : '<p class="empty" style="padding:20px 0">Nessun ordine da gestire in questo momento.</p>';
+  $("hService").innerHTML = '<div class="svc"><div><b class="tn">' + activeTables() + "</b><small>Tavoli attivi</small></div>" + '<div class="n"><b class="tn">' + c.new + "</b><small>Nuovi ordini</small></div>" + '<div class="p"><b class="tn">' + c.preparing + "</b><small>In preparazione</small></div>" + '<div class="r"><b class="tn">' + c.ready + "</b><small>Pronti da servire</small></div></div>";
+  // avvisi
+  var al = [], now = Date.now();
+  var late = LIVE.orders.filter(function(o){ return o.status === "new" && now - Date.parse(o.createdAt) > 10 * 60000; }).length;
+  if (late) al.push(["red", "Ordini in attesa", late + (late === 1 ? " ordine non è" : " ordini non sono") + " ancora stati presi in carico dopo 10 minuti.", "Apri cucina", "cucina"]);
+  if (c.ready) al.push(["amber", "Da servire", c.ready + (c.ready === 1 ? " ordine è pronto" : " ordini sono pronti") + ": portali in sala.", "Vedi ordini", "orders"]);
+  var off = allItems().filter(function(x){ return x.p.av === false; });
+  if (off.length) al.push(["amber", "Piatti esauriti", off.length + (off.length === 1 ? " piatto è segnato esaurito: " : " piatti segnati esauriti: ") + off.slice(0, 3).map(function(x){ return x.p.name; }).join(", ") + (off.length > 3 ? "…" : "") + ". Rimettili disponibili quando tornano.", "Gestisci", "esauriti"]);
+  else al.push(["ok", "Piatti esauriti", "Tutti i piatti sono disponibili. Se un piatto finisce, segnalo esaurito dal Menu.", "Menu", "menu"]);
+  if (LIVE.nuove) al.push(["red", "Prenotazioni da confermare", LIVE.nuove + (LIVE.nuove === 1 ? " prenotazione aspetta" : " prenotazioni aspettano") + " la tua risposta.", "Rispondi", "book"]);
+  var rv = HOME.rev;
+  if (rv && rv.count) { var low = rv.reviews.filter(function(x){ return x.stars <= 2; }).length; al.push([low ? "amber" : "ok", "Nuove recensioni", rv.count + (rv.count === 1 ? " voto" : " voti") + " negli ultimi 7 giorni, media " + String(rv.avg).replace(".", ",") + " su 5" + (low ? " · " + low + " con 1-2 stelle: leggile per capire cosa migliorare." : "."), "Leggi", "reviews"]); }
+  else al.push(["ok", "Nuove recensioni", "Nessun voto negli ultimi 7 giorni.", "Recensioni", "reviews"]);
+  var pm = HOME.stats.avgPrepMin;
+  al.push(pm == null ? ["ok", "Tempo medio di preparazione", "Non ancora calcolato: si misura quando la cucina segna gli ordini come pronti.", "", ""] : pm > 25 ? ["red", "Tempo medio di preparazione", pm + " minuti: è alto. Controlla la cucina nelle ore di punta.", "Statistiche", "stats"] : pm > 18 ? ["amber", "Tempo medio di preparazione", pm + " minuti: nella norma, ma da tenere d'occhio.", "Statistiche", "stats"] : ["ok", "Tempo medio di preparazione", (pm < 1 ? "Meno di un minuto" : pm + " minuti") + ": ottimo.", "Statistiche", "stats"]);
+  var rank = { red: 0, amber: 1, ok: 2 }; al.sort(function(a, b){ return rank[a[0]] - rank[b[0]]; });
+  $("hAlert").innerHTML = '<div class="alist">' + al.map(function(a){ return '<div class="al ' + a[0] + '"><span class="ad"></span><div><b>' + esc(a[1]) + "</b><span>" + esc(a[2]) + "</span></div>" + (a[3] ? '<button data-act="' + a[4] + '">' + esc(a[3]) + "</button>" : "") + "</div>"; }).join("") + "</div>";
+}
+$("hAlert").addEventListener("click", function(e){
+  var b = e.target.closest("button[data-act]"); if (!b) return;
+  var a = b.dataset.act;
+  if (a === "cucina") { location.href = "cucina.html"; return; }
+  if (a === "esauriti") { showTab("menu"); $("fAv").value = "off"; renderMenu(); return; }
+  showTab(a);
+});
+
+// ---------- TAVOLI ----------
+function loadTables(){ paintHead(); renderTables(); pulse(); }
+function renderTables(){
+  if (!M) return;
+  var n = Math.max(1, Math.min(200, parseInt(M.restaurant.tables_count, 10) || 20)), T = {};
+  LIVE.orders.forEach(function(o){ if (o.status === "cancelled") return; var k = o.type === "asporto" ? "asporto" : o.table; (T[k] ||= []).push(o); });
+  var rank = { new: 4, ready: 3, preparing: 2, served: 1 };
+  function card(k, label){
+    var l = T[k] || [], st = "free";
+    l.forEach(function(o){ if ((rank[o.status] || 0) > (rank[st] || 0)) st = o.status; });
+    var tot = l.reduce(function(t, o){ return t + o.total; }, 0), last = l.length ? l.map(function(o){ return o.createdAt; }).sort().pop() : null;
+    return '<button class="tcard ' + st + '" data-tbl="' + k + '"><span class="tn1">' + label + '</span><span class="tn2 tn">' + (k === "asporto" ? l.length : k) + '</span><span class="ts">' + (st === "free" ? "Libero" : st === "served" ? "Servito" : STATUS[st]) + '</span><span class="tx">' + (l.length ? l.length + (l.length === 1 ? " ordine" : " ordini") + " · " + euro(tot) + "<br>ultimo alle " + new Date(last).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }) : "nessun ordine oggi") + "</span></button>";
+  }
+  var h = ""; for (var i = 1; i <= n; i++) h += card(i, "Tavolo");
+  if (M.restaurant.takeaway_on || T.asporto) h += card("asporto", "Asporto · ordini");
+  $("tabGrid").innerHTML = h;
+  $("tabSub").textContent = "Oggi · " + activeTables() + " tavoli attivi su " + n + ". Si aggiorna da solo ogni 30 secondi. Tocca un tavolo per vedere i suoi ordini.";
+}
+$("tabGrid").addEventListener("click", function(e){
+  var b = e.target.closest("[data-tbl]"); if (!b) return;
+  PER = { key: "oggi", dal: shift(0), al: shift(0) }; renderPeriods(); ORDERS = null;
+  showTab("orders"); $("oTab").value = b.dataset.tbl; $("oSt").value = "";
+});
+setInterval(function(){ if (!$("app").hidden) { pulse(); if (CUR === "home") $("hello").textContent = greetTxt(); } }, 30000);
 
 // ---------- MENU ----------
 function allItems(){ var out = []; M.categories.forEach(function(c, ci){ c.items.forEach(function(p){ out.push({ p: p, c: c, ci: ci }); }); }); return out; }
@@ -776,6 +1105,78 @@ async function loadReviews(){
     $("revBox").innerHTML = html;
   } catch (e) { $("revBox").innerHTML = '<p class="empty">Errore: ' + esc(e.message) + "</p>"; }
 }
+
+// ---------- PRENOTAZIONI ----------
+var BK = { key: "oggi", items: [] };
+var BST = { nuova: "Da confermare", confermata: "Confermata", rifiutata: "Rifiutata", annullata: "Annullata", arrivata: "Arrivata" };
+function bkRange(){ var k = BK.key; return k === "oggi" ? [shift(0), shift(0)] : k === "domani" ? [shift(1), shift(1)] : k === "7" ? [shift(0), shift(6)] : k === "30" ? [shift(0), shift(29)] : [shift(-30), shift(-1)]; }
+async function countBook(){
+  try { var j = await api("/api/prenotazioni?conta=1"); LIVE.nuove = j.nuove || 0; [$("bookBadge"), $("qaBook")].forEach(function(b){ b.textContent = LIVE.nuove; b.hidden = !LIVE.nuove; }); renderNotif(); } catch (e) {}
+}
+async function loadBook(){
+  $("bookBox").innerHTML = '<p class="empty">Caricamento…</p>';
+  var r = bkRange();
+  try { BK.items = (await api("/api/prenotazioni?dal=" + r[0] + "&al=" + r[1])).items; renderBook(); countBook(); }
+  catch (e) { $("bookBox").innerHTML = '<p class="empty">Errore: ' + esc(e.message) + "</p>"; }
+}
+function longD(iso){ return new Date(iso + "T12:00:00").toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" }); }
+function waTo(phone, text){
+  var n = String(phone || "").replace(/[^\d]/g, ""); if (!n) return "";
+  if (n.indexOf("00") === 0) n = n.slice(2); else if (n.length <= 10 && n[0] === "3") n = "39" + n;
+  return "https://wa.me/" + n + "?text=" + encodeURIComponent(text);
+}
+function renderBook(){
+  var list = BK.items, act = list.filter(function(x){ return x.status === "nuova" || x.status === "confermata" || x.status === "arrivata"; });
+  var ppl = act.reduce(function(t, x){ return t + x.ppl; }, 0), nuove = list.filter(function(x){ return x.status === "nuova"; }).length;
+  var html = '<div class="kpis"><div class="kpi"><small>Prenotazioni</small><b class="tn">' + act.length + "</b><span>esclusi rifiutate e annullate</span></div>" +
+    '<div class="kpi"><small>Persone</small><b class="tn">' + ppl + "</b><span>coperti attesi</span></div>" +
+    '<div class="kpi"><small>Da confermare</small><b class="tn" style="color:' + (nuove ? "#075985" : "inherit") + '">' + nuove + "</b><span>rispondi al cliente</span></div></div>";
+  if (!list.length) { $("bookBox").innerHTML = html + '<p class="empty">Nessuna prenotazione in questo periodo.</p>'; return; }
+  var last = "";
+  list.forEach(function(x){
+    if (x.day !== last) { last = x.day; var dp = list.filter(function(y){ return y.day === x.day && y.status !== "rifiutata" && y.status !== "annullata"; }).reduce(function(t, y){ return t + y.ppl; }, 0); html += '<div class="bday">' + esc(longD(x.day)) + " · " + dp + " persone</div>"; }
+    var acts = "";
+    if (x.status === "nuova") acts += '<button class="btn ok" data-bk="confermata" data-id="' + x.id + '">✅ Conferma</button><button class="btn danger" data-bk="rifiutata" data-id="' + x.id + '">✖ Rifiuta</button>';
+    if (x.status === "confermata") acts += '<button class="btn ghost" data-bk="arrivata" data-id="' + x.id + '">🍽 Arrivati</button><button class="btn danger" data-bk="annullata" data-id="' + x.id + '">Annulla</button>';
+    if (x.status === "rifiutata" || x.status === "annullata" || x.status === "arrivata") acts += '<button class="btn ghost" data-bk="confermata" data-id="' + x.id + '">↩ Rimetti confermata</button>';
+    if (x.phone) acts += '<a class="btn ghost" href="tel:' + esc(x.phone.replace(/[^\d+]/g, "")) + '">📞 Chiama</a>' + (waTo(x.phone, "") ? '<a class="btn ghost" target="_blank" rel="noopener" href="' + esc(waTo(x.phone, "Ciao " + x.name + ", ")) + '">💬 WhatsApp</a>' : "");
+    html += '<div class="bk ' + x.status + '"><div class="tm tn">' + esc(x.time) + "<small>" + x.ppl + (x.ppl === 1 ? " pers." : " pers.") + "</small></div>" +
+      '<div class="who">' + esc(x.name) + ' <span class="st ' + x.status + '">' + BST[x.status] + "</span></div>" +
+      '<div class="meta">' + (x.phone ? "📱 " + esc(x.phone) + " · " : "") + (x.src === "pannello" ? "inserita dal pannello" : "con Marina") + " · " + new Date(x.createdAt).toLocaleString("it-IT", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) + "</div>" +
+      (x.note ? '<div class="note">📝 ' + esc(x.note) + "</div>" : "") + '<div class="acts">' + acts + "</div></div>";
+  });
+  $("bookBox").innerHTML = html;
+}
+$("bkPer").addEventListener("click", function(e){
+  var b = e.target.closest("button[data-b]"); if (!b) return;
+  BK.key = b.dataset.b; document.querySelectorAll("#bkPer button[data-b]").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); }); loadBook();
+});
+$("bookBox").addEventListener("click", async function(e){
+  var b = e.target.closest("button[data-bk]"); if (!b) return;
+  var x = BK.items.filter(function(y){ return y.id === b.dataset.id; })[0]; if (!x) return;
+  var st = b.dataset.bk, R = M ? M.restaurant : {}, msg = "";
+  if (st === "rifiutata" && !confirm("Rifiutare la prenotazione di " + x.name + "?")) return;
+  if (st === "annullata" && !confirm("Annullare la prenotazione di " + x.name + "?")) return;
+  if (st === "confermata" && x.status === "nuova") msg = "Ciao " + x.name + "! ✅ La tua prenotazione da " + R.name + " è confermata: " + longD(x.day) + " alle " + x.time + " per " + x.ppl + (x.ppl === 1 ? " persona" : " persone") + ". Ti aspettiamo!";
+  if (st === "rifiutata") msg = "Ciao " + x.name + ", ci dispiace: " + longD(x.day) + " alle " + x.time + " siamo al completo. Se vuoi possiamo proporti un altro orario. " + R.name;
+  var w = msg && waTo(x.phone, msg) ? window.open("", "_blank") : null;
+  b.disabled = true;
+  try {
+    await api("/api/prenotazioni", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: x.id, status: st }) });
+    x.status = st; renderBook(); countBook();
+    if (w) { w.location = waTo(x.phone, msg); toast("Salvato · si apre WhatsApp per avvisare il cliente"); } else toast("Salvato");
+  } catch (err) { if (w) w.close(); b.disabled = false; toast(err.message, true); }
+});
+$("bkAdd").onclick = function(){ var f = $("bkForm"); f.hidden = !f.hidden; if (!f.hidden) { $("bk_day").value = bkRange()[0] < shift(0) ? shift(0) : bkRange()[0]; $("bk_time").value = "20:00"; $("bk_name").focus(); } };
+$("bkCancel").onclick = function(){ $("bkForm").hidden = true; };
+$("bkForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  var body = { day: $("bk_day").value, time: $("bk_time").value, ppl: parseInt($("bk_ppl").value, 10), name: $("bk_name").value.trim(), phone: $("bk_phone").value.trim(), note: $("bk_note").value.trim() };
+  try {
+    await api("/api/prenotazioni", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    toast("Prenotazione salvata"); $("bkForm").reset(); $("bkForm").hidden = true; $("bk_ppl").value = 2; loadBook();
+  } catch (err) { toast(err.message, true); }
+});
 
 // ---------- LOCALE ----------
 function renderInfo(){
