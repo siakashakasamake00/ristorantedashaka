@@ -1171,6 +1171,47 @@ $("compose").addEventListener("submit", function(e){
 });
 function setBusy(b){ S.busy = b; sendBtn.classList.toggle("stop", b); sendBtn.setAttribute("aria-label", b ? "Interrompi" : "Invia"); sendBtn.innerHTML = b ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'; }
 
+// sessione della chat: serve al server per il limite di messaggi
+var SID = (function(){ var k = "cv-chat-sid", v = null; try { v = sessionStorage.getItem(k); } catch (e) {}
+  if (!/^[a-z0-9]{12,40}$/.test(v || "")) { v = (Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)).slice(0, 24); try { sessionStorage.setItem(k, v); } catch (e) {} }
+  return v; })();
+var SIMPLE_NOTE = false;
+function goSimple(motivo){
+  if (motivo !== "troppi_messaggi") S.offline = true; // da qui in poi risponde con i dati del menu (nessun costo)
+  if (SIMPLE_NOTE) return; SIMPLE_NOTE = true;
+  bubble("sys", motivo === "limite_sessione" ? "Abbiamo chiacchierato parecchio: da qui ti rispondo in modo più semplice, con i dati del menu." : "Ti rispondo in modo più semplice, con i dati del menu.");
+}
+// ordine proposto dall'AI: righe e totale RICALCOLATI dal server sui prezzi del menu
+function applyOrder(a){
+  var added = [];
+  (a.righe || []).forEach(function(r){ if (addToCart(r.id, r.q, r.nota || "")) added.push(r.q + " × " + esc(BY[r.id].name) + " " + euro(r.subtotale)); });
+  var skip = (a.scartati || []).map(function(x){ return esc(x.nome || x.id) + " (" + esc(x.motivo) + ")"; });
+  if (added.length) { refresh(); bubble("sys", "🛒 Aggiunto al carrello: " + added.join(", ") + "<br><b>Totale aggiunto: " + euro(a.totale) + "</b>" + (skip.length ? "<br>Non aggiunto: " + skip.join(", ") : "") + '<br><button class="btn sea" style="height:36px;margin-top:8px;font-size:12px" data-cart="1">Vedi ordine</button>'); }
+  else if (skip.length) bubble("sys", "Non aggiunto: " + skip.join(", "));
+}
+// prenotazione proposta dall'AI: parte solo quando il cliente preme "Invia richiesta"
+var PREN = {};
+function showBooking(a){
+  if (!a.valida) return;
+  var d = a.dati, k = "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); PREN[k] = d;
+  var when = new Date(d.giorno + "T12:00:00").toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+  bubble("sys", "📅 " + esc(when) + " · ore " + esc(d.ora) + "<br>👥 " + d.persone + (d.persone === 1 ? " persona" : " persone") + " · 👤 " + esc(d.nome) + " · 📞 " + esc(d.telefono) + (d.note ? "<br>📝 " + esc(d.note) : "") +
+    '<br><button class="btn sea" style="height:36px;margin-top:8px;font-size:12px" data-pren="' + k + '">Invia richiesta</button>');
+}
+msgsEl.addEventListener("click", async function(e){
+  var b = e.target.closest("[data-pren]"); if (!b) return;
+  e.stopPropagation(); var d = PREN[b.dataset.pren]; if (!d || b.disabled) return;
+  b.disabled = true; b.textContent = "Invio…";
+  try {
+    var r = await fetch("/api/prenotazioni", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ day: d.giorno, time: d.ora, ppl: d.persone, name: d.nome, phone: d.telefono, note: d.note, ref: b.dataset.pren }) });
+    var j = await r.json().catch(function(){ return {}; });
+    if (!r.ok) throw new Error(j.error || "Errore " + r.status);
+    b.textContent = "Richiesta inviata ✓";
+    bubble("sys", "Richiesta di prenotazione inviata. Il ristorante te la conferma al numero indicato.");
+  } catch (err) { b.disabled = false; b.textContent = "Invia richiesta"; bubble("err", "Prenotazione non inviata: " + esc(err.message)); }
+}, true);
+
 async function ask(text){
   if (S.busy) return;
   text = String(text).slice(0, 600);
@@ -1179,48 +1220,54 @@ async function ask(text){
   if (S.turns.length > 16) S.turns = S.turns.slice(-16);
   while (S.turns.length && S.turns[0].role !== "user") S.turns.shift();
   var b = bubble("m", '<span class="typing"><i></i><i></i><i></i></span><span class="typing-l">__CAMERIERE__ sta scrivendo…</span>');
-  if (!USE_AI || S.offline) {
+  function simple(){
     setBusy(true);
     // si prende un paio di secondi, come una cameriera vera (più tempo per le risposte lunghe)
     var wait = 1300 + Math.min(900, text.length * 15) + Math.round(Math.random() * 600);
     setTimeout(function(){ try { localAnswer(text, b); } catch (err) { b.textContent = "Scusa, non ho capito: prova a riformulare."; } S.turns = []; setBusy(false); }, wait);
-    return;
   }
+  if (!USE_AI || S.offline) { simple(); return; }
   setBusy(true);
-  var full = "";
+  var full = "", keep = false;
   try {
     var sample = await samplePromise;
-    if (sample) {
+    if (sample) { // anteprima dentro Claude
       S.ctl = new AbortController();
       var res = await sample([{ role: "user", content: rules() }].concat(S.turns), {
         modelTier: "quick", cache: false, signal: S.ctl.signal,
         onText: function(u){ b.innerHTML = renderRich(visiblePart(u.text)); msgsEl.scrollTop = msgsEl.scrollHeight; }
       });
       full = res.text;
-    } else {
-      S.ctl = new AbortController();
-      var r = await fetch("/api/marina", { method: "POST", headers: { "Content-Type": "application/json" }, signal: S.ctl.signal,
-        body: JSON.stringify({ turns: S.turns, table: TABLE }) });
-      var j = await r.json().catch(function(){ return {}; });
-      if (!r.ok || !j.text) throw { code: "api", message: j.error || "HTTP " + r.status };
-      full = j.text;
+      b.innerHTML = renderRich(visiblePart(full)) || "…";
+      S.turns.push({ role: "assistant", content: full });
+      applyCartTag(full);
+      return;
     }
-    b.innerHTML = renderRich(visiblePart(full)) || "…";
+    S.ctl = new AbortController();
+    var r = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, signal: S.ctl.signal,
+      body: JSON.stringify({ turns: S.turns, table: TABLE, sid: SID }) });
+    var j = await r.json().catch(function(){ return {}; });
+    if (j.fallback || !r.ok || !j.text) { // tetto di spesa, limiti, API giù… → parole chiave, senza errori per il cliente
+      keep = true; S.turns.pop(); goSimple(j.motivo || "api"); simple(); return;
+    }
+    full = j.text;
+    b.innerHTML = renderRich(full) || "…";
     S.turns.push({ role: "assistant", content: full });
-    applyCartTag(full);
+    if (j.azione && j.azione.tipo === "ordine") applyOrder(j.azione);
+    if (j.azione && j.azione.tipo === "prenotazione") showBooking(j.azione);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
   } catch (e) {
     var c = e && e.code;
     if (c === "cancelled" || (e && e.name === "AbortError")) { b.innerHTML = e.text ? renderRich(visiblePart(e.text)) : "<i>Interrotto.</i>"; if (e.text) S.turns.push({ role: "assistant", content: e.text }); }
+    else if (!(window.claude && window.claude.use)) { keep = true; S.turns.pop(); goSimple("api"); simple(); return; } // rete assente o server giù
     else {
-      if (c === "api") { S.offline = true; S.turns = []; localAnswer(text, b); return; } // senza API risponde con i dati del menu
       b.remove(); S.turns.pop();
       var msg = c === "not_granted" || c === "sampling_disabled" ? "__CAMERIERE__ non è stata autorizzata in questa anteprima. Puoi comunque consultare il menu." :
         c === "rate_limited" ? "__CAMERIERE__ è molto richiesta in questo momento: riprova tra poco." :
-        c === "api" ? "__CAMERIERE__ non è raggiungibile (" + esc(e.message) + "). Il menu funziona lo stesso." :
         "__CAMERIERE__ non è disponibile in questa anteprima. Il menu, i filtri e il carrello funzionano lo stesso.";
       bubble("err", msg);
     }
-  } finally { setBusy(false); S.ctl = null; }
+  } finally { if (!keep) setBusy(false); S.ctl = null; }
 }
 
 refresh();

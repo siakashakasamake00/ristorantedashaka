@@ -2,7 +2,9 @@
 //   GET /api/admin?azione=verifica
 //   GET /api/admin?azione=stats&dal=2026-09-01&al=2026-09-28
 //   GET /api/admin?azione=ordini&dal=...&al=...
+//   GET /api/admin?azione=ai&mese=2026-10           cameriere AI: conversazioni e costo stimato del mese
 import { TZ, checkPin, day, json, ordersOfDay, pinError, store } from "../lib/menu.mjs";
+import CFG from "../lib/cliente-ai.mjs";
 
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
 const hourOf = (iso) => Number(new Date(iso).toLocaleString("en-GB", { timeZone: TZ, hour: "2-digit", hour12: false })) % 24;
@@ -58,6 +60,18 @@ export default async (req) => {
   const url = new URL(req.url);
   const azione = url.searchParams.get("azione");
   if (azione === "verifica") return json({ ok: true });
+  if (azione === "ai") {
+    const mese = /^\d{4}-\d{2}$/.test(url.searchParams.get("mese") || "") ? url.searchParams.get("mese") : day().slice(0, 7);
+    const L = CFG.limiti || {};
+    const u = (await store().get(`ai/uso/${mese}`, { type: "json" })) || {};
+    const r2 = (n) => Math.round(n * 100) / 100;
+    return json({
+      attivo: !!CFG.ai && !!process.env.ANTHROPIC_API_KEY, ai: !!CFG.ai, chiave: !!process.env.ANTHROPIC_API_KEY, mese,
+      conversazioni: u.conversazioni || 0, messaggi: u.messaggi || 0,
+      costo_eur: r2((u.costo_usd || 0) * (L.cambio_usd_eur ?? 0.92)), tetto_eur: L.tetto_mensile_eur ?? 20,
+      fallback: u.fallback || {}, token: { input: u.input || 0, output: u.output || 0, cache_scritti: u.cache_scritti || 0, cache_letti: u.cache_letti || 0 },
+    });
+  }
 
   const today = day(), yesterday = day(new Date(Date.now() - 86400000));
   const dal = DAY_RE.test(url.searchParams.get("dal") || "") ? url.searchParams.get("dal") : today;

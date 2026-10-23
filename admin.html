@@ -421,6 +421,7 @@ td .note{color:var(--amber-ink);font-size:12.5px;margin-top:3px}
     <!-- STATISTICHE -->
     <section data-panel="stats" hidden>
       <div class="periods" id="periods1"></div>
+      <div id="aiBox"></div>
       <div id="statsBox"><p class="empty">Caricamento…</p></div>
     </section>
 
@@ -945,7 +946,23 @@ function perLabel(){ return PER.dal === PER.al ? new Date(PER.dal + "T12:00:00")
 
 // ---------- STATISTICHE ----------
 var STATS = null;
+// ---------- CAMERIERE AI: conversazioni e costo stimato del mese ----------
+async function loadAi(){
+  var box = $("aiBox"); if (!box) return;
+  try {
+    var a = await api("/api/admin?azione=ai");
+    var pct = a.tetto_eur ? Math.min(100, Math.round(a.costo_eur / a.tetto_eur * 100)) : 0;
+    var fb = Object.keys(a.fallback || {}).map(function(k){ return k.replace(/_/g, " ") + ": " + a.fallback[k]; }).join(" · ");
+    var mese = new Date(a.mese + "-15T12:00:00").toLocaleDateString("it-IT", { month: "long", year: "numeric" });
+    var kpi = function(l, v, sub){ return '<div class="kpi"><small>' + l + '</small><b class="tn">' + v + "</b>" + (sub ? "<span>" + sub + "</span>" : "") + "</div>"; };
+    box.innerHTML = '<p class="sub">Cameriere AI · ' + esc(mese) + (a.attivo ? "" : a.ai ? " · <b>chiave API mancante: risponde a parole chiave</b>" : " · <b>spento (solo parole chiave)</b>") + "</p>" +
+      '<div class="kpis">' + kpi("Conversazioni", a.conversazioni, a.messaggi + " messaggi con l'AI") +
+      kpi("Costo stimato", euro(a.costo_eur), "tetto " + euro(a.tetto_eur) + " · " + pct + "%" + (pct >= 100 ? " · raggiunto: parole chiave fino a fine mese" : "")) +
+      kpi("Risposte a parole chiave", Object.keys(a.fallback || {}).reduce(function(s, k){ return s + a.fallback[k]; }, 0), fb || "nessuna") + "</div>";
+  } catch (e) { box.innerHTML = ""; }
+}
 async function loadStats(){
+  loadAi();
   $("statsBox").innerHTML = '<p class="empty">Caricamento…</p>';
   try { STATS = await api("/api/admin?azione=stats&dal=" + PER.dal + "&al=" + PER.al); renderStats(); }
   catch (e) { $("statsBox").innerHTML = '<p class="empty">Errore: ' + esc(e.message) + "</p>"; }
