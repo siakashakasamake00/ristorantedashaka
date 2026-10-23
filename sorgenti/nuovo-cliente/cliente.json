@@ -3,6 +3,23 @@
   "dati": "nuovo-cliente/menu.json",
   "cartella_foto": "sorgenti/nuovo-cliente/foto",
   "tipo_locale": "trattoria di cucina piacentina",
+  "ai": false,
+  "ai_impostazioni": {
+    "_nota": "Usate solo se ai = true. Costi in euro stimati dai prezzi Anthropic (dollari per milione di token).",
+    "modello": "claude-haiku-5-5",
+    "max_tokens": 600,
+    "max_messaggi_sessione": 20,
+    "max_messaggi_ip": 120,
+    "finestra_ip_minuti": 10,
+    "tetto_mensile_eur": 20,
+    "cambio_usd_eur": 0.92,
+    "prezzi_usd_mtok": {
+      "input": 0.1,
+      "output": 0.5,
+      "cache_write": 0.125,
+      "cache_read": 0.01
+    }
+  },
   "cameriere": {
     "nome": "Giulio",
     "ruolo": "il cameriere virtuale",

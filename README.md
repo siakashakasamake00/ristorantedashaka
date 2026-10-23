@@ -19,7 +19,9 @@ cucina.html                      dashboard cucina
 admin.html                       pannello del titolare
 tavoli.html                      QR Code tavoli
 netlify/functions/ordini.mjs     salva e aggiorna gli ordini
-netlify/functions/marina.mjs     la cameriera virtuale (Claude)
+netlify/functions/chat.js        la cameriera virtuale (Claude), con limiti e riserva a parole chiave
+netlify/lib/chat-core.mjs        istruzioni dal menu, ricalcolo totali, costi
+netlify/lib/cliente-ai.mjs       impostazioni AI generate da build.py (acceso/spento, tetto di spesa)
 netlify/functions/menu-api.mjs   legge e salva il menu modificato dal pannello
 netlify/functions/foto.mjs       foto dei piatti caricate dal pannello
 netlify/functions/admin.mjs      statistiche e storico ordini
@@ -35,7 +37,9 @@ foto/, sorgenti/                 foto originali e file per rigenerare il sito (a
 | `KITCHEN_PIN` | PIN scelto da te (solo cifre) | entrare nella dashboard cucina |
 | `ADMIN_PIN` | PIN **diverso**, meglio 8 cifre | entrare nel pannello del titolare |
 | `ANTHROPIC_API_KEY` | chiave da console.anthropic.com (spunta *Contains secret values*) | far parlare Marina |
-| `CHAT_MODEL` | facoltativa, predefinito `claude-haiku-4-5` | modello di Marina |
+| `CHAT_MODEL` | facoltativa, predefinito `claude-haiku-5-5` | modello di Marina |
+
+Dettagli su AI, limiti, tetto di spesa e test: **README-CAMERIERE-AI.md**.
 
 Non scrivere mai i PIN nei file del sito: Netlify blocca la pubblicazione se li trova. Dopo aver aggiunto o cambiato una variabile: **Deploys → Trigger deploy → Deploy project**.
 

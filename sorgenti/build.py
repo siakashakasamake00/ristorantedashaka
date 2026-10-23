@@ -21,6 +21,8 @@ FOTO = os.path.join(ROOT, CLI.get('cartella_foto', 'foto'))
 PREFIX = CLI.get('prefissi_categorie', {})
 W = CLI['cameriere']
 R = DATA['restaurant']
+# "ai": true → il cameriere conversa con l'API di Claude (con riserva a parole chiave); false → solo parole chiave, nessun costo
+AI = bool(CLI.get('ai', W.get('ai', False)))
 
 # colori predefiniti dei modelli (Da Shaka) → colori del cliente
 DEFAULT_COLORS = {
@@ -104,7 +106,7 @@ COMMON = [  # l'ordine conta: prima i segnaposto più lunghi
     ('__NAME_UP__', h(R['name'].upper())), ('__NAME_JS__', jstr(R['name'])), ('__TAGLINE_JS__', jstr(R.get('tagline', ''))),
     ('__NAME__', h(R['name'])), ('__KEY__', KEY), ('__TABLES__', str(int(R.get('tables_count', 20)))),
     ('__RUOLO_BREVE__', h(W.get('ruolo_breve', 'Cameriere virtuale'))), ('__RUOLO__', h(W.get('ruolo', 'il cameriere virtuale'))),
-    ('__CAMERIERE__', h(W['nome'])), ('__AI__', 'true' if W.get('ai', True) else 'false'), ('__TAKEAWAY__', 'true' if R.get('takeaway_on') else 'false'), ('__LOGO_SVG__', LOGO), ('__AVATAR_HTML__', AVATAR),
+    ('__CAMERIERE__', h(W['nome'])), ('__AI__', 'true' if AI else 'false'), ('__TAKEAWAY__', 'true' if R.get('takeaway_on') else 'false'), ('__LOGO_SVG__', LOGO), ('__AVATAR_HTML__', AVATAR),
 ]
 def fill(s, extra=()):
     for a, b in list(extra) + COMMON: s = s.replace(a, b)
@@ -146,6 +148,18 @@ if os.path.realpath(OUT) != os.path.realpath(ROOT):
     shutil.copytree(f'{ROOT}/netlify', f'{OUT}/netlify', dirs_exist_ok=True)
     for f in ('netlify.toml', 'package.json'): shutil.copy(f'{ROOT}/{f}', OUT)
 
-print(f'{R["name"]} · cameriere: {W["nome"]} · prodotti: {total} · foto: {len(imgs)} · senza foto: {len(missing)}')
+# impostazioni del cameriere AI lette da netlify/functions/chat.js e admin.mjs (niente menu qui: il menu si legge da Netlify Blobs)
+LIMITI = {'modello': 'claude-haiku-5-5', 'max_tokens': 600, 'max_messaggi_sessione': 20, 'max_messaggi_ip': 120,
+          'finestra_ip_minuti': 10, 'tetto_mensile_eur': 20, 'cambio_usd_eur': 0.92, 'timeout_secondi': 8,
+          'prezzi_usd_mtok': {'input': 0.10, 'output': 0.50, 'cache_write': 0.125, 'cache_read': 0.01}}
+LIMITI.update({k: v for k, v in CLI.get('ai_impostazioni', {}).items() if not k.startswith('_')})
+ai_cfg = {'ai': AI, 'tipo_locale': CLI.get('tipo_locale', 'ristorante'),
+          'cameriere': {k: W.get(k, '') for k in ('nome', 'ruolo', 'carattere')}, 'limiti': LIMITI}
+os.makedirs(f'{OUT}/netlify/lib', exist_ok=True)
+open(f'{OUT}/netlify/lib/cliente-ai.mjs', 'w').write(
+    '// GENERATO da sorgenti/build.py partendo da cliente.json: non modificarlo a mano.\n'
+    'export default ' + json.dumps(ai_cfg, ensure_ascii=False, indent=2) + ';\n')
+
+print(f'{R["name"]} · cameriere: {W["nome"]} · AI: {"sì" if AI else "no (parole chiave)"} · prodotti: {total} · foto: {len(imgs)} · senza foto: {len(missing)}')
 if missing: print('  senza foto:', ', '.join(missing))
 print(f'index.html: {os.path.getsize(OUT + "/index.html")/1e6:.2f} MB  ·  cartella: {OUT}')
